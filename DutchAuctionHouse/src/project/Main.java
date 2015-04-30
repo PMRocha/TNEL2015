@@ -1,5 +1,7 @@
 package project;
 
+import agents.CIC;
+import jade.core.Agent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
@@ -23,6 +25,12 @@ public class Main {
 					"jade.tools.rma.rma", null);
 
 			rma.start();
+			
+			//AgentController CIC = cc.createNewAgent("CIC",
+					//"agents.CIC", Object[]);
+			
+			AgentController CIC = cc.acceptNewAgent("CIC", new CIC());
+			CIC.start();
 
 		} catch (StaleProxyException e) {
 			// TODO Auto-generated catch block

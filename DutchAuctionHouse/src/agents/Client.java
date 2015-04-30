@@ -7,6 +7,7 @@ import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.lang.acl.ACLMessage;
 
 public class Client extends Agent {
 
@@ -17,23 +18,23 @@ public class Client extends Agent {
 
 
 
-	class CICBehaviour extends SimpleBehaviour {
+	class ClientBehaviour extends SimpleBehaviour {
 
 		private static final long serialVersionUID = 1L;
 
 		// construtor do behaviour
-		public CICBehaviour(Agent a) {
+		public ClientBehaviour(Agent a) {
 			super(a);
 		}
 
-		// método action
+		// action method
 		public void action() {
 			
 
 		}
 
 		
-		// método done
+		// done method
 		public boolean done() {
 			return false;
 		}
@@ -57,6 +58,7 @@ public class Client extends Agent {
 			System.exit(1);
 		}
 
+		//adds client to service
 		sd.setType("Client");
 		dfd.addServices(sd);
 		try {
@@ -65,9 +67,29 @@ public class Client extends Agent {
 			e.printStackTrace();
 		}
 
-		// cria behaviour
-		CICBehaviour c = new CICBehaviour(this);
+		// creates behaviour
+		ClientBehaviour c = new ClientBehaviour(this);
 		addBehaviour(c);
+		
+		
+		//searches agent type CIC
+		DFAgentDescription template = new DFAgentDescription();
+		ServiceDescription sd1 = new ServiceDescription();
+
+		sd1.setType("CIC");
+		template.addServices(sd1);
+		try {
+			DFAgentDescription[] result = DFService.search(this, template);
+			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+			for (int i = 0; i < result.length; ++i)
+				msg.addReceiver(result[i].getName());
+
+			msg.setContent("Enter-"+getName());
+			send(msg);
+		} catch (FIPAException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }
