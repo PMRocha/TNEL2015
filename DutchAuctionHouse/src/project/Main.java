@@ -1,7 +1,6 @@
 package project;
 
 import agents.CIC;
-import jade.core.Agent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;

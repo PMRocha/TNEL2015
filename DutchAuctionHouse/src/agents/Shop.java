@@ -78,7 +78,7 @@ public class Shop extends Agent {
 			for (int i = 0; i < result.length; ++i)
 				msg.addReceiver(result[i].getName());
 
-			msg.setContent("Enter-"+getName());
+			msg.setContent("Shop-Enter-"+getName());
 			send(msg);
 		} catch (FIPAException e) {
 			e.printStackTrace();

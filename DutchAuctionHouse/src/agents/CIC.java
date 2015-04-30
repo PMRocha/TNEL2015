@@ -17,7 +17,6 @@ public class CIC extends Agent {
 	private static final long serialVersionUID = 1L;
 	private CICStructure cicStructure;
 
-
 	class CICBehaviour extends SimpleBehaviour {
 
 		private static final long serialVersionUID = 1L;
@@ -30,27 +29,37 @@ public class CIC extends Agent {
 		// método action
 		public void action() {
 			ACLMessage msg = blockingReceive();
-			ACLMessage reply = msg.createReply();
 
 			String[] msgParts = msg.getContent().split("-");
-			
-		
-			if(msgParts[0].equals("Enter"))
-			{
-				cicStructure.addClient(msg.getSender().getLocalName());
-				System.out.println(cicStructure.getClients().toString());
-			}
+			System.out.println(msgParts[0]);
 
+			if (msgParts[0].equals("Client")) {
+				ClientCommunication(msgParts, msg);
+			} else if (msgParts[0].equals("Shop")) {
+				ShopCommunication(msgParts, msg);
+			}
 		}
 
 		
+		private void ShopCommunication(String[] msgParts, ACLMessage msg) {
+			if (msgParts[1].equals("Enter")) {
+				cicStructure.addShop(msg.getSender().getLocalName());
+				System.out.println(cicStructure.getShops().toString());
+			}
+		}
+
+		private void ClientCommunication(String[] msgParts, ACLMessage msg) {
+			if (msgParts[1].equals("Enter")) {
+				cicStructure.addClient(msg.getSender().getLocalName());
+				System.out.println(cicStructure.getClients().toString());
+			}
+		}
+
 		// método done
 		public boolean done() {
 			return false;
 		}
 	}
-
-
 
 	protected void setup() {
 
@@ -58,17 +67,15 @@ public class CIC extends Agent {
 		dfd.setName(getAID());
 		ServiceDescription sd = new ServiceDescription();
 		sd.setName(getName());
-		
-		cicStructure=new CICStructure();
-		
-		//Object[] args = getArguments();
 
-		/*if (args.length == 0) {
-			System.out.println("teste");
-		}  else {
-			System.err.println("Parametros inválidos em CIC");
-			System.exit(1);
-		}*/
+		cicStructure = new CICStructure();
+
+		// Object[] args = getArguments();
+
+		/*
+		 * if (args.length == 0) { System.out.println("teste"); } else {
+		 * System.err.println("Parametros inválidos em CIC"); System.exit(1); }
+		 */
 
 		sd.setType("CIC");
 		dfd.addServices(sd);

@@ -14,7 +14,7 @@ public class CICStructure {
 		shops=new ArrayList<String>();
 	}
 	
-	//clients commands
+	//clients functions
 	public void addClient(String name)
 	{
 		clients.add(name);
@@ -27,6 +27,21 @@ public class CICStructure {
 
 	public ArrayList<String> getClients() {
 		return clients;
+	}
+	
+	//shop functions
+	public void addShop(String name)
+	{
+		shops.add(name);
+	}
+		
+	public void removeShop(String name)
+	{
+		shops.remove(name);
+	}
+
+	public ArrayList<String> getShops() {
+		return shops;
 	}
 	
 	
