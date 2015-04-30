@@ -1,6 +1,5 @@
 package agents;
 
-import structures.CICStructure;
 import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.DFService;
@@ -9,42 +8,27 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 
-public class CIC extends Agent {
+public class Shop extends Agent {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private CICStructure cicStructure;
 
-
-	class CICBehaviour extends SimpleBehaviour {
+	class ShopBehaviour extends SimpleBehaviour {
 
 		private static final long serialVersionUID = 1L;
 
 		// construtor do behaviour
-		public CICBehaviour(Agent a) {
+		public ShopBehaviour(Agent a) {
 			super(a);
 		}
 
-		// método action
+		// action method
 		public void action() {
-			ACLMessage msg = blockingReceive();
-			ACLMessage reply = msg.createReply();
-
-			String[] msgParts = msg.getContent().split("-");
 			
-		
-			if(msgParts[0].equals("Enter"))
-			{
-				cicStructure.addClient(msg.getSender().getLocalName());
-				System.out.println(cicStructure.getClients().toString());
-			}
 
 		}
 
 		
-		// método done
+		// done method
 		public boolean done() {
 			return false;
 		}
@@ -59,18 +43,17 @@ public class CIC extends Agent {
 		ServiceDescription sd = new ServiceDescription();
 		sd.setName(getName());
 		
-		cicStructure=new CICStructure();
-		
-		//Object[] args = getArguments();
+		Object[] args = getArguments();
 
-		/*if (args.length == 0) {
+		if (args.length == 0) {
 			System.out.println("teste");
 		}  else {
-			System.err.println("Parametros inválidos em CIC");
+			System.err.println("Parametros inválidos no client");
 			System.exit(1);
-		}*/
+		}
 
-		sd.setType("CIC");
+		//adds client to service
+		sd.setType("Shop");
 		dfd.addServices(sd);
 		try {
 			DFService.register(this, dfd);
@@ -78,9 +61,29 @@ public class CIC extends Agent {
 			e.printStackTrace();
 		}
 
-		// cria behaviour
-		CICBehaviour c = new CICBehaviour(this);
+		// creates behaviour
+		ShopBehaviour c = new ShopBehaviour(this);
 		addBehaviour(c);
+		
+		
+		//searches agent type CIC
+		DFAgentDescription template = new DFAgentDescription();
+		ServiceDescription sd1 = new ServiceDescription();
+
+		sd1.setType("CIC");
+		template.addServices(sd1);
+		try {
+			DFAgentDescription[] result = DFService.search(this, template);
+			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+			for (int i = 0; i < result.length; ++i)
+				msg.addReceiver(result[i].getName());
+
+			msg.setContent("Enter-"+getName());
+			send(msg);
+		} catch (FIPAException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }
