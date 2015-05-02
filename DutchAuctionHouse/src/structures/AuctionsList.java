@@ -44,4 +44,9 @@ public class AuctionsList {
 			}
 		}
 	}
+
+	public HashMap<Integer, ArrayList<AID>> getAuctionsOfProduct(String product) {
+		return auctions.get(product);
+		
+	}
 }

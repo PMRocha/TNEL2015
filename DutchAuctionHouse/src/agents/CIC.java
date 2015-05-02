@@ -1,5 +1,8 @@
 package agents;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import structures.AuctionsList;
 import structures.RegisteredPeople;
 import jade.core.AID;
@@ -74,6 +77,24 @@ public class CIC extends Agent {
 				
 				reply.setContent("CIC-EnterSuccessful");
 				reply.setPerformative(ACLMessage.CONFIRM);
+				send(reply);
+			}
+			else if (msgParts[1].equals("AvailableAuctions")) {
+				
+				
+				HashMap<Integer, ArrayList<AID>> availableAuctions=auctions.getAuctionsOfProduct(msgParts[2]);
+				
+				if(availableAuctions!=null)
+				{
+					reply.setContent("CIC-Auctions-"+availableAuctions.toString());
+					reply.setPerformative(ACLMessage.INFORM);
+				}
+				else
+				{
+					reply.setContent("CIC-NoAuctions");
+					reply.setPerformative(ACLMessage.FAILURE);
+				}
+				
 				send(reply);
 			}
 			else
