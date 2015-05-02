@@ -11,11 +11,13 @@ import jade.lang.acl.ACLMessage;
 public class Shop extends Agent {
 
 	private static final long serialVersionUID = 1L;
-
+	private boolean registered;
+	
+	
 	class ShopBehaviour extends SimpleBehaviour {
 
 		private static final long serialVersionUID = 1L;
-
+	
 		// construtor do behaviour
 		public ShopBehaviour(Agent a) {
 			super(a);
@@ -23,8 +25,23 @@ public class Shop extends Agent {
 
 		// action method
 		public void action() {
-			
+			ACLMessage msg = blockingReceive();
 
+			String[] msgParts = msg.getContent().split("-");
+			
+			if (msgParts[0].equals("CIC")) {
+				if(msgParts[1].equals("EnterSuccessful"))
+				{
+					registered=true;
+				}
+			}
+			
+			if(registered)
+			{
+				
+			}
+			
+			
 		}
 
 		
@@ -38,6 +55,7 @@ public class Shop extends Agent {
 
 	protected void setup() {
 
+		registered=false;
 		DFAgentDescription dfd = new DFAgentDescription();
 		dfd.setName(getAID());
 		ServiceDescription sd = new ServiceDescription();

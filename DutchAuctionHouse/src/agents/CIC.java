@@ -1,6 +1,7 @@
 package agents;
 
-import structures.CICStructure;
+import structures.AuctionsList;
+import structures.RegisteredPeople;
 import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.DFService;
@@ -15,7 +16,8 @@ public class CIC extends Agent {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private CICStructure cicStructure;
+	private RegisteredPeople register;
+	private AuctionsList auctions;
 
 	class CICBehaviour extends SimpleBehaviour {
 
@@ -31,7 +33,6 @@ public class CIC extends Agent {
 			ACLMessage msg = blockingReceive();
 
 			String[] msgParts = msg.getContent().split("-");
-			System.out.println(msgParts[0]);
 
 			if (msgParts[0].equals("Client")) {
 				ClientCommunication(msgParts, msg);
@@ -41,17 +42,32 @@ public class CIC extends Agent {
 		}
 
 		
+		//handles messages from Client
 		private void ShopCommunication(String[] msgParts, ACLMessage msg) {
+			ACLMessage reply=msg.createReply();
+			
 			if (msgParts[1].equals("Enter")) {
-				cicStructure.addShop(msg.getSender().getLocalName());
-				System.out.println(cicStructure.getShops().toString());
+				register.addShop(msg.getSender().getLocalName());
+				System.out.println(register.getShops().toString());
+				
+				reply.setContent("CIC-EnterSuccessful");
+				reply.setPerformative(ACLMessage.CONFIRM);
+				send(reply);
+				
 			}
 		}
 
+		//handles messages from Shop
 		private void ClientCommunication(String[] msgParts, ACLMessage msg) {
+			ACLMessage reply=msg.createReply();
+			
 			if (msgParts[1].equals("Enter")) {
-				cicStructure.addClient(msg.getSender().getLocalName());
-				System.out.println(cicStructure.getClients().toString());
+				register.addClient(msg.getSender().getLocalName());
+				System.out.println(register.getClients().toString());
+				
+				reply.setContent("CIC-EnterSuccessful");
+				reply.setPerformative(ACLMessage.CONFIRM);
+				send(reply);
 			}
 		}
 
@@ -68,7 +84,7 @@ public class CIC extends Agent {
 		ServiceDescription sd = new ServiceDescription();
 		sd.setName(getName());
 
-		cicStructure = new CICStructure();
+		register = new RegisteredPeople();
 
 		// Object[] args = getArguments();
 
