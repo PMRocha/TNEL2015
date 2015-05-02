@@ -45,11 +45,7 @@ public class Shop extends Agent {
 			
 			if(registered)
 			{
-				
-				
 				createAuction();
-				
-				
 			}
 			
 			
@@ -59,8 +55,11 @@ public class Shop extends Agent {
 		private void createAuction() {
 			
 			try {
-				AgentController sel1;
-				sel1 = getContainerController().acceptNewAgent(getLocalName()+"Seller"+sellerNumber, new CIC());
+				Object[] arguments = new Object[2];
+				arguments[0] = product;
+				arguments[1] = quantity;
+				
+				AgentController sel1 =  getContainerController().createNewAgent(getLocalName()+"Seller"+sellerNumber,"agents.Seller",arguments);
 				sel1.start(); //acceptNewAgent("name1", new Agent());
 				
 				ACLMessage msg=new ACLMessage(ACLMessage.REQUEST);

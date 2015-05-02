@@ -1,5 +1,8 @@
 package agents;
 
+import java.util.ArrayList;
+import structures.ClockTimer;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.DFService;
@@ -11,7 +14,13 @@ import jade.lang.acl.ACLMessage;
 public class Seller extends Agent{
 
 	private static final long serialVersionUID = 1L;
-		
+	private String product;
+	private int quantity;
+	
+	private ClockTimer clock;
+	private ArrayList<AID> buyers;
+	
+	//communication behaviour
 	class SellerBehaviour extends SimpleBehaviour {
 
 		private static final long serialVersionUID = 1L;
@@ -23,16 +32,22 @@ public class Seller extends Agent{
 
 		// action method
 		public void action() {
-		
+			ACLMessage msg = receive();
+			
+			if(clock.isTriggered())
+			{
+				System.out.println("BUY NOW");
+				clock.setTriggered(false);
+			}
 		}
-
-		
+	
 		// done method
 		public boolean done() {
 			return false;
 		}
 	}
-
+	
+	
 
 
 	protected void setup() {
@@ -44,41 +59,26 @@ public class Seller extends Agent{
 		
 		Object[] args = getArguments();
 
-		if (args.length == 0) {
-			System.out.println("teste");
+		if (args.length == 2) {
+			
+			product=(String) args[0];
+			quantity=(int) args[1];
+			System.out.println("I'm seller and I sell "+ product+ " q: "+quantity);
+			clock=new ClockTimer(10);
+			clock.runTime();
 		}  else {
 			System.err.println("Parametros inválidos no client");
-			System.exit(1);
 		}
+		
+		// creates behaviour
+		SellerBehaviour c = new SellerBehaviour(this);
+		addBehaviour(c);
 
 		//adds client to service
 		sd.setType("Seller");
 		dfd.addServices(sd);
 		try {
 			DFService.register(this, dfd);
-		} catch (FIPAException e) {
-			e.printStackTrace();
-		}
-
-		// creates behaviour
-		SellerBehaviour c = new SellerBehaviour(this);
-		addBehaviour(c);
-		
-		
-		//searches agent type CIC
-		DFAgentDescription template = new DFAgentDescription();
-		ServiceDescription sd1 = new ServiceDescription();
-
-		sd1.setType("CIC");
-		template.addServices(sd1);
-		try {
-			DFAgentDescription[] result = DFService.search(this, template);
-			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-			for (int i = 0; i < result.length; ++i)
-				msg.addReceiver(result[i].getName());
-
-			msg.setContent("Shop-Enter-"+getName());
-			send(msg);
 		} catch (FIPAException e) {
 			e.printStackTrace();
 		}
