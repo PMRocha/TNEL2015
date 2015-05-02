@@ -41,17 +41,32 @@ public class CIC extends Agent {
 		}
 
 		
+		//handles messages from Client
 		private void ShopCommunication(String[] msgParts, ACLMessage msg) {
+			ACLMessage reply=msg.createReply();
+			
 			if (msgParts[1].equals("Enter")) {
 				cicStructure.addShop(msg.getSender().getLocalName());
 				System.out.println(cicStructure.getShops().toString());
+				
+				reply.setContent("CIC-EnterSuccessful");
+				reply.setPerformative(ACLMessage.CONFIRM);
+				send(reply);
+				
 			}
 		}
 
+		//handles messages from Shop
 		private void ClientCommunication(String[] msgParts, ACLMessage msg) {
+			ACLMessage reply=msg.createReply();
+			
 			if (msgParts[1].equals("Enter")) {
 				cicStructure.addClient(msg.getSender().getLocalName());
 				System.out.println(cicStructure.getClients().toString());
+				
+				reply.setContent("CIC-EnterSuccessful");
+				reply.setPerformative(ACLMessage.CONFIRM);
+				send(reply);
 			}
 		}
 
