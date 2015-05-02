@@ -1,0 +1,9 @@
+Registration:
+Client->CIC : "Client-Enter" Perf:REQUEST;
+Shop->CIC : "Shop-Enter"  Perf:REQUEST;
+
+CIC->Client/Shop: "CIC-EnterSuccessful" Perf:CONFIRM
+
+
+Create auction:
+

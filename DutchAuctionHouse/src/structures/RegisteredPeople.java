@@ -1,46 +1,48 @@
 package structures;
 
+import jade.core.AID;
+
 import java.util.ArrayList;
 
 public class RegisteredPeople {
 	
 	//clients
-	private ArrayList<String> clients;
-	private ArrayList<String> shops;
+	private ArrayList<AID> clients;
+	private ArrayList<AID> shops;
 	
 	public RegisteredPeople()
 	{
-		clients=new ArrayList<String>();
-		shops=new ArrayList<String>();
+		clients=new ArrayList<AID>();
+		shops=new ArrayList<AID>();
 	}
 	
 	//clients functions
-	public void addClient(String name)
+	public void addClient(AID name)
 	{
 		clients.add(name);
 	}
 	
-	public void removeClient(String name)
+	public void removeClient(AID name)
 	{
 		clients.remove(name);
 	}
 
-	public ArrayList<String> getClients() {
+	public ArrayList<AID> getClients() {
 		return clients;
 	}
 	
 	//shop functions
-	public void addShop(String name)
+	public void addShop(AID name)
 	{
 		shops.add(name);
 	}
 		
-	public void removeShop(String name)
+	public void removeShop(AID name)
 	{
 		shops.remove(name);
 	}
 
-	public ArrayList<String> getShops() {
+	public ArrayList<AID> getShops() {
 		return shops;
 	}
 	

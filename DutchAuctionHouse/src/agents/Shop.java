@@ -1,5 +1,6 @@
 package agents;
 
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.DFService;
@@ -7,12 +8,18 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
+import jade.wrapper.AgentController;
+import jade.wrapper.StaleProxyException;
 
 public class Shop extends Agent {
 
 	private static final long serialVersionUID = 1L;
 	private boolean registered;
+	private AID CIC;
 	
+	private String product;
+	private int quantity;
+	private int sellerNumber;
 	
 	class ShopBehaviour extends SimpleBehaviour {
 
@@ -39,12 +46,36 @@ public class Shop extends Agent {
 			if(registered)
 			{
 				
+				
+				createAuction();
+				
+				
 			}
 			
 			
 		}
 
 		
+		private void createAuction() {
+			
+			try {
+				AgentController sel1;
+				sel1 = getContainerController().acceptNewAgent(getLocalName()+"Seller"+sellerNumber, new CIC());
+				sel1.start(); //acceptNewAgent("name1", new Agent());
+				
+				ACLMessage msg=new ACLMessage(ACLMessage.REQUEST);
+				msg.addReceiver(CIC);
+				msg.setContent("Shop-CreateAuction-"+product+"-"+quantity+"-"+sel1.getName());
+				System.out.println("auction");
+				send(msg);
+				sellerNumber++;
+				
+			} catch (StaleProxyException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 		// done method
 		public boolean done() {
 			return false;
@@ -56,6 +87,12 @@ public class Shop extends Agent {
 	protected void setup() {
 
 		registered=false;
+		
+		//may change
+		quantity=10;
+		product="poop";
+		sellerNumber=0;
+		
 		DFAgentDescription dfd = new DFAgentDescription();
 		dfd.setName(getAID());
 		ServiceDescription sd = new ServiceDescription();
@@ -93,10 +130,11 @@ public class Shop extends Agent {
 		try {
 			DFAgentDescription[] result = DFService.search(this, template);
 			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-			for (int i = 0; i < result.length; ++i)
-				msg.addReceiver(result[i].getName());
+			
+			CIC=result[0].getName();
+			msg.addReceiver(CIC);
 
-			msg.setContent("Shop-Enter-"+getName());
+			msg.setContent("Shop-Enter");
 			send(msg);
 		} catch (FIPAException e) {
 			e.printStackTrace();
