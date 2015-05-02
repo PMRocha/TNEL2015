@@ -5,27 +5,27 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
-public class AuctionGUIControler {
+public class CICGUIController {
 	@FXML
-	private ListView<String> agentView;
-	private ListView<String> messageView;
-	private ListView<String> bidHistoryView;
+	private ListView<String> clientAgentListView;
+	private ListView<String> shopAgentListView;
+	private ListView<String> auctionListView;
 
-	private ObservableList<String> listViewData = FXCollections.observableArrayList();
+	private ObservableList<String> clientAgentListViewData = FXCollections.observableArrayList();
 
-	public AuctionGUIControler() {
+	public CICGUIController() {
 		
-		listViewData.add("Lydia");
-		listViewData.add("Anna");
-		listViewData.add("Stefan");
-		listViewData.add("Martin");
+		clientAgentListViewData.add("Lydia");
+		clientAgentListViewData.add("Anna");
+		clientAgentListViewData.add("Stefan");
+		clientAgentListViewData.add("Martin");
 	}
 	
 	@FXML
 	private void initialize() {
 		
 		// Init ListView and listen for selection changes
-		agentView.setItems(listViewData);
+		clientAgentListView.setItems(clientAgentListViewData);
 		
 		
 		/*listView.getSelectionModel().selectedItemProperty().removeListener(new ChangeListener<String>() {
