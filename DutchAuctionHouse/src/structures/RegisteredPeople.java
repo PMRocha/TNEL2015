@@ -2,13 +2,13 @@ package structures;
 
 import java.util.ArrayList;
 
-public class CICStructure {
+public class RegisteredPeople {
 	
 	//clients
 	private ArrayList<String> clients;
 	private ArrayList<String> shops;
 	
-	public CICStructure()
+	public RegisteredPeople()
 	{
 		clients=new ArrayList<String>();
 		shops=new ArrayList<String>();

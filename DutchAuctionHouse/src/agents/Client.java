@@ -15,7 +15,7 @@ public class Client extends Agent {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	private boolean registered;
 
 
 	class ClientBehaviour extends SimpleBehaviour {
@@ -29,7 +29,21 @@ public class Client extends Agent {
 
 		// action method
 		public void action() {
+			ACLMessage msg = blockingReceive();
+
+			String[] msgParts = msg.getContent().split("-");
 			
+			if (msgParts[0].equals("CIC")) {
+				if(msgParts[1].equals("EnterSuccessful"))
+				{
+					registered=true;
+				}
+			}
+			
+			if (registered)
+			{
+				
+			}
 
 		}
 
