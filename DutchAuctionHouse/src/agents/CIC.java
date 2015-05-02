@@ -60,6 +60,8 @@ public class CIC extends Agent {
 				auctions.addAuction(msgParts[2],Integer.parseInt(msgParts[3]),new AID(msgParts[4],AID.ISLOCALNAME));
 				auctions.getAuctions().toString();
 			}
+			else
+				System.out.println(msg.getContent());
 		}
 
 		//handles messages from Client
