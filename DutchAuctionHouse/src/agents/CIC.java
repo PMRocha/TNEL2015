@@ -22,6 +22,7 @@ public class CIC extends Agent {
 	private static final long serialVersionUID = 1L;
 	private RegisteredPeople register;
 	private AuctionsList auctions;
+	//private CICGUI
 
 	class CICBehaviour extends SimpleBehaviour {
 
