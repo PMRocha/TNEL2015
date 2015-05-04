@@ -6,4 +6,22 @@ CIC->Client/Shop: "CIC-EnterSuccessful" Perf:CONFIRM
 
 
 Create auction:
+Shop->CIC: "Shop-CreateAuction-product-quantity-seller" Perf:Request
+(creates sellers)
 
+Auctions list:
+Client->CIC: "Client-AvailableAuctions-product-quantity" Perf:Query-if
+
+
+Classes:
+Client:
+-timer(refresh rate);
+-product wanted;
+-quantity wanted;
+-wallet;
+
+Shop:
+-initial price of product;
+-end price of product;
+-product;
+-quantity;

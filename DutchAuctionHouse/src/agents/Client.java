@@ -36,31 +36,35 @@ public class Client extends Agent {
 		public void action() {
 			ACLMessage msg = receive();
 
-			// if Client isn't registered
-			if (!registered) {
-				if (msg != null) {
-					String[] msgParts = msg.getContent().split("-");
-
+			if (msg != null) {
+				String[] msgParts = msg.getContent().split("-");
+				
+				if (!registered) {
 					if (msgParts[0].equals("CIC")) {
 						if (msgParts[1].equals("EnterSuccessful")) {
 							registered = true;
 						}
 					}
 				}
-			}
-
-			
-				if (msg == null) {
-
-					if (clock.isTriggered()) {
-						msg = new ACLMessage(ACLMessage.QUERY_IF);
-						msg.setContent("Client-AvailableAuctions-" + product
-								+ "-" + quantity);
-						msg.addReceiver(CIC);
-						send(msg);
-						clock.setTriggered(false);
+				//if client is registered
+				else {
+					if (msgParts[1].equals("Auctions")) {
+						System.err.println(msg.getContent());
 					}
-				
+					else
+						System.out.println(msg.getContent());
+				}
+			}
+			// if message has no content
+			else {
+				if (clock.isTriggered()) {
+					msg = new ACLMessage(ACLMessage.QUERY_IF);
+					msg.setContent("Client-AvailableAuctions-" + product + "-"
+							+ quantity);
+					msg.addReceiver(CIC);
+					send(msg);
+					clock.setTriggered(false);
+				}
 			}
 		}
 
