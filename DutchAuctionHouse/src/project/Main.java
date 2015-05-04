@@ -7,6 +7,8 @@ import jade.core.Runtime;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
+import javafx.event.ActionEvent;
+
 
 public class Main {
 	public static void main(String arg[]){
@@ -27,6 +29,8 @@ public class Main {
 			
 			//AgentController CIC = cc.createNewAgent("CIC",
 					//"agents.CIC", Object[]);
+			
+			
 			
 			AgentController CIC = cc.acceptNewAgent("CIC", new CIC());
 			CIC.start();

@@ -20,7 +20,7 @@ public class CICGUI extends Application {
         
         Scene scene = new Scene(root, 800, 800);
     
-        primaryStage.setTitle("Auction");
+        primaryStage.setTitle("CIC");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

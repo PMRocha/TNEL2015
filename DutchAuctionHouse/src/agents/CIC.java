@@ -1,5 +1,7 @@
 package agents;
 
+import javafx.application.Application;
+import gui.CICGUI;
 import structures.AuctionsList;
 import structures.RegisteredPeople;
 import jade.core.AID;
@@ -17,9 +19,25 @@ public class CIC extends Agent {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public RegisteredPeople getRegister() {
+		return register;
+	}
+
+	public void setRegister(RegisteredPeople register) {
+		this.register = register;
+	}
+
+	public AuctionsList getAuctions() {
+		return auctions;
+	}
+
+	public void setAuctions(AuctionsList auctions) {
+		this.auctions = auctions;
+	}
+
 	private RegisteredPeople register;
 	private AuctionsList auctions;
-	//private CICGUI
+	private CICGUI gui;
 
 	class CICBehaviour extends SimpleBehaviour {
 
@@ -114,6 +132,7 @@ public class CIC extends Agent {
 		// cria behaviour
 		CICBehaviour c = new CICBehaviour(this);
 		addBehaviour(c);
+		Application.launch(CICGUI.class);
 	}
 
 }
