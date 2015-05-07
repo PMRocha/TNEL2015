@@ -1,16 +1,18 @@
 package agents;
 
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.lang.acl.ACLMessage;
 
 public class Buyer extends Agent{
 
 		private static final long serialVersionUID = 1L;
-		
+		private AID seller; 
 		
 		class SellerBehaviour extends SimpleBehaviour {
 			private static final long serialVersionUID = 1L;
@@ -43,10 +45,13 @@ public class Buyer extends Agent{
 			
 			Object[] args = getArguments();
 
-			if (args.length == 0) {
-				System.out.println("teste");
+			if (args.length == 3) {
+				
+				seller=(AID) args[2];
+				System.out.println(seller.getLocalName());
+				
 			}  else {
-				System.err.println("Parametros inválidos no client");
+				System.err.println("Parametros inválidos no buyer"+args.length);
 				System.exit(1);
 			}
 
@@ -58,6 +63,14 @@ public class Buyer extends Agent{
 			} catch (FIPAException e) {
 				e.printStackTrace();
 			}
+			
+			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+
+			msg.addReceiver(seller);
+
+			msg.setContent("Buyer-Enter");
+			send(msg);
+			
 		}
 
 }

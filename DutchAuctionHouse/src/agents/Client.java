@@ -57,18 +57,19 @@ public class Client extends Agent {
 					if (msgParts[1].equals("Auctions")) {
 						clientAuctions.parseStringAuction(msgParts[2]);
 						
-						System.err.println(msgParts[2]);
+						//System.err.println(msgParts[2]);
 						ArrayList<AID> sellers = clientAuctions
 								.getAuctionsWithoutBuyer();
 
-						System.err.println(sellers.toString());
+						//System.err.println(sellers.toString());
 						
 						if (sellers.size() > 0) {
 							try {
 								for (int i = 0; i < sellers.size(); i++) {
-									Object[] arguments = new Object[2];
+									Object[] arguments = new Object[3];
 									arguments[0] = product;
 									arguments[1] = quantity;
+									arguments[2] = sellers.get(i);
 
 									// initializes agents for auction
 									AgentController buy1;
@@ -77,7 +78,7 @@ public class Client extends Agent {
 											.createNewAgent(
 													getLocalName() + "Buyer"
 															+ buyerNumber,
-													"agents.Seller", arguments);
+													"agents.Buyer", arguments);
 
 									buy1.start(); // acceptNewAgent("name1", new
 													// Agent());

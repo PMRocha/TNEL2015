@@ -34,6 +34,11 @@ public class Seller extends Agent{
 		public void action() {
 			ACLMessage msg = receive();
 			
+			if(msg!=null)
+			{
+				System.out.println(msg.getContent());
+			}
+			
 			if(clock.isTriggered())
 			{
 				//System.out.println("BUY NOW");

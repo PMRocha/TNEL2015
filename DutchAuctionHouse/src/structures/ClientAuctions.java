@@ -21,7 +21,7 @@ public class ClientAuctions {
 
 	public void parseStringAuction(String content) {
 		existingAuctions = new HashMap<Integer, ArrayList<AID>>();
-		content = content.substring(1, content.length()-2);
+		content = content.substring(1, content.length()-1);
 		
 		String[] help;
 		ArrayList<AID> sellers = new ArrayList<AID>();
@@ -30,10 +30,15 @@ public class ClientAuctions {
 
 		for (int i = 0; i < processing.length; i += 2) {
 
-			help = processing[i + 1].split(",");
+			
+			help = processing[i + 1].substring(1).replaceAll("]", "").split(",");
 
+			
+			
 			for (int j = 0; j < help.length; j++) {
-				sellers.add(new AID(help[j], true));
+				System.err.println(help[j]);
+				//error here
+				sellers.add(new AID(help[j], AID.ISLOCALNAME));
 			}
 
 			existingAuctions.put(Integer.parseInt(processing[i]), sellers);
@@ -55,6 +60,7 @@ public class ClientAuctions {
 			participatingSellers.addAll(auction.getValue());
 		}
 		existingSellers.removeAll(participatingSellers);
+		
 		
 		//corrects number of auctions
 		participatingAuctions=existingAuctions;
