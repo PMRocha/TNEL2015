@@ -56,6 +56,9 @@ public class ClientAuctions {
 		}
 		existingSellers.removeAll(participatingSellers);
 		
+		//corrects number of auctions
+		participatingAuctions=existingAuctions;
+		
 		return existingSellers;
 		
 	}

@@ -95,6 +95,20 @@ public class CIC extends Agent {
 				reply.setPerformative(ACLMessage.CONFIRM);
 				send(reply);
 			}
+			else if (msgParts[1].equals("AvailableAuctions")) {
+				
+				if(auctions.getAuctionsOfProduct(msgParts[2])==null)
+				{
+				reply.setContent("CIC-NoAuction");
+				reply.setPerformative(ACLMessage.FAILURE);
+				}
+				else
+				{
+					reply.setContent("CIC-Auctions-"+auctions.getAuctionsOfProduct(msgParts[2]).toString());
+					reply.setPerformative(ACLMessage.INFORM);
+				}
+				send(reply);
+			}
 			else
 				System.out.println(msg.getContent());
 		}

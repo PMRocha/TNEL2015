@@ -1,5 +1,7 @@
 package agents;
 
+import java.util.ArrayList;
+
 import structures.ClockTimer;
 import structures.ClientAuctions;
 import jade.core.AID;
@@ -10,6 +12,8 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
+import jade.wrapper.AgentController;
+import jade.wrapper.StaleProxyException;
 
 public class Client extends Agent {
 
@@ -20,6 +24,7 @@ public class Client extends Agent {
 	private boolean registered;
 	private String product;
 	private int quantity;
+	private int buyerNumber;
 	private AID CIC;
 	private ClientAuctions clientAuctions;
 	private ClockTimer clock;
@@ -38,8 +43,8 @@ public class Client extends Agent {
 			ACLMessage msg = receive();
 
 			if (msg != null) {
-				String[] msgParts = msg.getContent().split("-",3);
-				
+				String[] msgParts = msg.getContent().split("-", 3);
+
 				if (!registered) {
 					if (msgParts[0].equals("CIC")) {
 						if (msgParts[1].equals("EnterSuccessful")) {
@@ -47,13 +52,43 @@ public class Client extends Agent {
 						}
 					}
 				}
-				//if client is registered
+				// if client is registered
 				else {
 					if (msgParts[1].equals("Auctions")) {
 						clientAuctions.parseStringAuction(msgParts[2]);
-						System.out.println("auctions:::::"+clientAuctions.getAuctionsWithoutBuyer().toString());
-					}
-					else
+						
+						System.err.println(msgParts[2]);
+						ArrayList<AID> sellers = clientAuctions
+								.getAuctionsWithoutBuyer();
+
+						System.err.println(sellers.toString());
+						
+						if (sellers.size() > 0) {
+							try {
+								for (int i = 0; i < sellers.size(); i++) {
+									Object[] arguments = new Object[2];
+									arguments[0] = product;
+									arguments[1] = quantity;
+
+									// initializes agents for auction
+									AgentController buy1;
+
+									buy1 = getContainerController()
+											.createNewAgent(
+													getLocalName() + "Buyer"
+															+ buyerNumber,
+													"agents.Seller", arguments);
+
+									buy1.start(); // acceptNewAgent("name1", new
+													// Agent());
+									buyerNumber++;
+								}
+							} catch (StaleProxyException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					} else
 						System.out.println(msg.getContent());
 				}
 			}
@@ -87,7 +122,7 @@ public class Client extends Agent {
 		Object[] args = getArguments();
 		product = "poop";
 		quantity = 10;
-		clientAuctions=new ClientAuctions();
+		clientAuctions = new ClientAuctions();
 		clock = new ClockTimer(3);// refresh rate
 		clock.runTime();
 

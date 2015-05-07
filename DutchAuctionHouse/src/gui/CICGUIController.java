@@ -5,15 +5,11 @@ import jade.core.AID;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import structures.AuctionsList;
-import agents.CIC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import javafx.util.Duration;
+import agents.CIC;
 
 public class CICGUIController {
 	
