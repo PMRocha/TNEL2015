@@ -36,7 +36,7 @@ public class Seller extends Agent{
 			
 			if(clock.isTriggered())
 			{
-				System.out.println("BUY NOW");
+				//System.out.println("BUY NOW");
 				clock.setTriggered(false);
 			}
 		}

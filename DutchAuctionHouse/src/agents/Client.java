@@ -1,6 +1,7 @@
 package agents;
 
 import structures.ClockTimer;
+import structures.ClientAuctions;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
@@ -20,7 +21,7 @@ public class Client extends Agent {
 	private String product;
 	private int quantity;
 	private AID CIC;
-
+	private ClientAuctions clientAuctions;
 	private ClockTimer clock;
 
 	class ClientBehaviour extends SimpleBehaviour {
@@ -37,7 +38,7 @@ public class Client extends Agent {
 			ACLMessage msg = receive();
 
 			if (msg != null) {
-				String[] msgParts = msg.getContent().split("-");
+				String[] msgParts = msg.getContent().split("-",3);
 				
 				if (!registered) {
 					if (msgParts[0].equals("CIC")) {
@@ -49,7 +50,8 @@ public class Client extends Agent {
 				//if client is registered
 				else {
 					if (msgParts[1].equals("Auctions")) {
-						System.err.println(msg.getContent());
+						clientAuctions.parseStringAuction(msgParts[2]);
+						System.out.println("auctions:::::"+clientAuctions.getAuctionsWithoutBuyer().toString());
 					}
 					else
 						System.out.println(msg.getContent());
@@ -85,6 +87,7 @@ public class Client extends Agent {
 		Object[] args = getArguments();
 		product = "poop";
 		quantity = 10;
+		clientAuctions=new ClientAuctions();
 		clock = new ClockTimer(3);// refresh rate
 		clock.runTime();
 
