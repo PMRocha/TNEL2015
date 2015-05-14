@@ -12,20 +12,23 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 
-public class Seller extends Agent{
+public class Seller extends Agent {
 
 	private static final long serialVersionUID = 1L;
 	private String product;
 	private int quantity;
-	
+	private int price;
+	private boolean auctionStarted;
+	private String shop;
+
 	private ClockTimer clock;
 	private ArrayList<AID> buyers;
-	
-	//communication behaviour
+
+	// communication behaviour
 	class SellerBehaviour extends SimpleBehaviour {
 
 		private static final long serialVersionUID = 1L;
-	
+
 		// construtor do behaviour
 		public SellerBehaviour(Agent a) {
 			super(a);
@@ -34,32 +37,57 @@ public class Seller extends Agent{
 		// action method
 		public void action() {
 			ACLMessage msg = receive();
+
+			ACLMessage reply;
 			
-			if(msg!=null)
-			{
+			if (msg != null) {
 				String[] msgParts = msg.getContent().split("-");
-				if(msgParts[1].equals("Enter"))
-				{
-					buyers.add(msg.getSender());
-					System.out.println(buyers.size());
+				if (msgParts[0].equals("Buyer")) {
+					if (msgParts[1].equals("Enter")) {
+						buyers.add(msg.getSender());
+						System.out.println(buyers.size());
+					}
+					else if(msgParts[1].equals("Bid"))
+					{
+						quantity=0;
+						System.out.println("teste");
+						reply = new ACLMessage(ACLMessage.INFORM);
+						reply.addReceiver(new AID(shop,AID.ISLOCALNAME));
+						reply.setContent("SOLD!");
+						send(reply);
+					}
+				}
+				
+			} else {
+				if (clock.isTriggered()) {
+					if (!auctionStarted) {
+						auctionStarted = true;
+						clock.setTriggered(false);
+					} else {
+						reply = new ACLMessage(ACLMessage.PROPOSE);
+						price--;
+
+						for (int i = 0; i < buyers.size(); i++) {
+							reply.addReceiver(buyers.get(i));
+						}
+
+						reply.setContent("Seller-Auction-" + product + "-"
+								+ quantity + "-" + price);
+						send(reply);
+						clock.setTriggered(false);
+
+					}
+					// System.out.println("BUY NOW");
+
 				}
 			}
-			
-			if(clock.isTriggered())
-			{
-				//System.out.println("BUY NOW");
-				clock.setTriggered(false);
-			}
 		}
-	
+
 		// done method
 		public boolean done() {
 			return false;
 		}
 	}
-	
-	
-
 
 	protected void setup() {
 
@@ -67,26 +95,30 @@ public class Seller extends Agent{
 		dfd.setName(getAID());
 		ServiceDescription sd = new ServiceDescription();
 		sd.setName(getName());
-		
+
 		Object[] args = getArguments();
 
-		if (args.length == 2) {
-			
-			product=(String) args[0];
-			quantity=(int) args[1];
-			buyers=new ArrayList<AID>();
-			System.out.println("I'm seller and I sell "+ product+ " q: "+quantity);
-			clock=new ClockTimer(10);
+		if (args.length == 3) {
+
+			product = (String) args[0];
+			quantity = (int) args[1];
+			buyers = new ArrayList<AID>();
+			price = 200;
+			auctionStarted = false;
+			shop=(String) args[2];
+			System.out.println("I'm seller and I sell " + product + " q: "
+					+ quantity);
+			clock = new ClockTimer(3);
 			clock.runTime();
-		}  else {
+		} else {
 			System.err.println("Parametros inválidos no client");
 		}
-		
+
 		// creates behaviour
 		SellerBehaviour c = new SellerBehaviour(this);
 		addBehaviour(c);
 
-		//adds client to service
+		// adds client to service
 		sd.setType("Seller");
 		dfd.addServices(sd);
 		try {
@@ -94,7 +126,7 @@ public class Seller extends Agent{
 		} catch (FIPAException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }

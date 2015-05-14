@@ -55,9 +55,10 @@ public class Shop extends Agent {
 		private void createAuction() {
 			
 			try {
-				Object[] arguments = new Object[2];
+				Object[] arguments = new Object[3];
 				arguments[0] = product;
 				arguments[1] = quantity;
+				arguments[2]= getName();
 				
 				AgentController sel1 =  getContainerController().createNewAgent(getLocalName()+"Seller"+sellerNumber,"agents.Seller",arguments);
 				sel1.start(); //acceptNewAgent("name1", new Agent());
