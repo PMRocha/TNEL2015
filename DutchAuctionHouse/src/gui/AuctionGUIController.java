@@ -1,5 +1,7 @@
 package gui;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,30 +13,44 @@ public class AuctionGUIController {
 	private ListView<String> messageView;
 	private ListView<String> bidHistoryView;
 
-	private ObservableList<String> listViewData = FXCollections.observableArrayList();
-
-	public AuctionGUIController() {
-		
-		listViewData.add("Lydia");
-		listViewData.add("Anna");
-		listViewData.add("Stefan");
-		listViewData.add("Martin");
-	}
+	private ObservableList<String> agentViewData = FXCollections.observableArrayList();
+	private ObservableList<String> messageViewData = FXCollections.observableArrayList();
+	private ObservableList<String> bidHistoryViewData = FXCollections.observableArrayList();
 	
 	@FXML
-	private void initialize() {
+	private void initialize() {		
 		
-		// Init ListView and listen for selection changes
-		agentView.setItems(listViewData);
-		
-		
-		/*listView.getSelectionModel().selectedItemProperty().removeListener(new ChangeListener<String>() {
+		agentView.getSelectionModel().selectedItemProperty().removeListener(new ChangeListener<String>() {
 
 			@Override
 			public void changed(ObservableValue<? extends String> observable,
 					String oldValue, String newValue) {
-					listView.setItems(listViewData);
+					agentViewData.remove(oldValue);
+					agentViewData.add(newValue);
+					agentView.setItems(agentViewData);
 			}
-		});*/
+		});
+		
+		messageView.getSelectionModel().selectedItemProperty().removeListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable,
+					String oldValue, String newValue) {
+				messageViewData.remove(oldValue);
+				messageViewData.add(newValue);
+				messageView.setItems(messageViewData);
+			}
+		});
+		
+		bidHistoryView.getSelectionModel().selectedItemProperty().removeListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable,
+					String oldValue, String newValue) {
+				bidHistoryViewData.remove(oldValue);
+				bidHistoryViewData.add(newValue);
+				bidHistoryView.setItems(bidHistoryViewData);
+			}
+		});
 	}
 }
