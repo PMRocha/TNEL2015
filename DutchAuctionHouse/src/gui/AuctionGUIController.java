@@ -23,8 +23,7 @@ public class AuctionGUIController {
 		agentView.getSelectionModel().selectedItemProperty().removeListener(new ChangeListener<String>() {
 
 			@Override
-			public void changed(ObservableValue<? extends String> observable,
-					String oldValue, String newValue) {
+			public void changed(ObservableValue<? extends String> observable,String oldValue, String newValue) {
 					agentViewData.remove(oldValue);
 					agentViewData.add(newValue);
 					agentView.setItems(agentViewData);
@@ -34,8 +33,7 @@ public class AuctionGUIController {
 		messageView.getSelectionModel().selectedItemProperty().removeListener(new ChangeListener<String>() {
 
 			@Override
-			public void changed(ObservableValue<? extends String> observable,
-					String oldValue, String newValue) {
+			public void changed(ObservableValue<? extends String> observable,String oldValue, String newValue) {
 				messageViewData.remove(oldValue);
 				messageViewData.add(newValue);
 				messageView.setItems(messageViewData);
@@ -45,8 +43,7 @@ public class AuctionGUIController {
 		bidHistoryView.getSelectionModel().selectedItemProperty().removeListener(new ChangeListener<String>() {
 
 			@Override
-			public void changed(ObservableValue<? extends String> observable,
-					String oldValue, String newValue) {
+			public void changed(ObservableValue<? extends String> observable,String oldValue, String newValue) {
 				bidHistoryViewData.remove(oldValue);
 				bidHistoryViewData.add(newValue);
 				bidHistoryView.setItems(bidHistoryViewData);
