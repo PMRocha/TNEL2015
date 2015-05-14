@@ -89,7 +89,7 @@ public class Shop extends Agent {
 		
 		//may change
 		quantity=10;
-		product="poop";
+		product="pc";
 		sellerNumber=0;
 		
 		DFAgentDescription dfd = new DFAgentDescription();
@@ -97,14 +97,14 @@ public class Shop extends Agent {
 		ServiceDescription sd = new ServiceDescription();
 		sd.setName(getName());
 		
-		Object[] args = getArguments();
+		//Object[] args = getArguments();
 
-		if (args.length == 0) {
+		/*if (args.length == 0) {
 			System.out.println("teste");
 		}  else {
 			System.err.println("Parametros inválidos no client");
 			System.exit(1);
-		}
+		}*/
 
 		//adds client to service
 		sd.setType("Shop");

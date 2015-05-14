@@ -11,7 +11,7 @@ Shop->CIC: "Shop-CreateAuction-product-quantity-seller" Perf:Request
 
 Auctions list:
 Client->CIC: "Client-AvailableAuctions-product-quantity" Perf:Query-if
-
+CIC->Client: "" Perf:
 
 Classes:
 Client:

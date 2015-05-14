@@ -36,9 +36,9 @@ public class ClientAuctions {
 			
 			
 			for (int j = 0; j < help.length; j++) {
-				System.err.println(help[j]);
-				//error here
-				sellers.add(new AID(help[j], AID.ISLOCALNAME));
+				//extracts localname
+				String localname=help[j].substring(help[j].indexOf(":name")+6,help[j].indexOf("@"));
+				sellers.add(new AID(localname, AID.ISLOCALNAME));
 			}
 
 			existingAuctions.put(Integer.parseInt(processing[i]), sellers);

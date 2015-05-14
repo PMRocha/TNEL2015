@@ -120,19 +120,19 @@ public class Client extends Agent {
 		sd.setName(getName());
 
 		// arguments
-		Object[] args = getArguments();
-		product = "poop";
+		//Object[] args = getArguments();
+		product = "pc";
 		quantity = 10;
 		clientAuctions = new ClientAuctions();
 		clock = new ClockTimer(3);// refresh rate
 		clock.runTime();
 
-		if (args.length == 0) {
+		/*if (args.length == 0) {
 			System.out.println("teste");
 		} else {
 			System.err.println("Parametros inválidos no client");
 			System.exit(1);
-		}
+		}*/
 
 		// adds client to service
 		sd.setType("Client");

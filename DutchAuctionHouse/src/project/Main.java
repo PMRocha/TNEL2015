@@ -7,7 +7,7 @@ import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
 import agents.CIC;
-import agents.Shop;
+
 
 
 public class Main {
@@ -38,8 +38,8 @@ public class Main {
 			AgentController s1 = cc.createNewAgent("s1","agents.Shop", argument);
 			s1.start();
 			
-			AgentController s2 = cc.createNewAgent("s2","agents.Shop", argument);
-			s2.start();
+			/*AgentController s2 = cc.createNewAgent("s2","agents.Shop", argument);
+			s2.start();*/
 			
 			AgentController c1 = cc.createNewAgent("c1","agents.Client", argument);
 			c1.start();

@@ -1,6 +1,7 @@
 package agents;
 
 import java.util.ArrayList;
+
 import structures.ClockTimer;
 import jade.core.AID;
 import jade.core.Agent;
@@ -36,7 +37,12 @@ public class Seller extends Agent{
 			
 			if(msg!=null)
 			{
-				System.out.println(msg.getContent());
+				String[] msgParts = msg.getContent().split("-");
+				if(msgParts[1].equals("Enter"))
+				{
+					buyers.add(msg.getSender());
+					System.out.println(buyers.size());
+				}
 			}
 			
 			if(clock.isTriggered())
@@ -68,6 +74,7 @@ public class Seller extends Agent{
 			
 			product=(String) args[0];
 			quantity=(int) args[1];
+			buyers=new ArrayList<AID>();
 			System.out.println("I'm seller and I sell "+ product+ " q: "+quantity);
 			clock=new ClockTimer(10);
 			clock.runTime();
