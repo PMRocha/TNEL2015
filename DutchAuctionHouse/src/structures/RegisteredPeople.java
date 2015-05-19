@@ -24,7 +24,9 @@ public class RegisteredPeople {
 	
 	public void removeClient(AID name)
 	{
+		System.out.println("client:"+clients.size());
 		clients.remove(name);
+		System.out.println("client:"+clients.size());
 	}
 
 	public ArrayList<AID> getClients() {
@@ -39,9 +41,9 @@ public class RegisteredPeople {
 		
 	public void removeShop(AID name)
 	{
-		System.out.println("quantity:"+shops.size());
+
 		shops.remove(name);
-		System.out.println("quantity:"+shops.size());
+		
 	}
 
 	public ArrayList<AID> getShops() {

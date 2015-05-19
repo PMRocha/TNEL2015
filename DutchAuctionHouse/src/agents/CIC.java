@@ -79,7 +79,6 @@ public class CIC extends Agent {
 				auctions.getAuctions().toString();
 			} else if(msgParts[1].equals("Exit"))
 			{
-				System.out.println("CIC:"+msg.getContent());
 				register.removeShop(new AID(msg.getSender().getLocalName(),
 						AID.ISLOCALNAME));
 			}
@@ -121,7 +120,13 @@ public class CIC extends Agent {
 					reply.setPerformative(ACLMessage.INFORM);
 				}
 				send(reply);
-			} else
+			}
+			else if(msgParts[1].equals("Exit"))
+			{
+				System.out.println("CIC:"+msg.getContent());
+				register.removeClient(new AID(msg.getSender().getLocalName(),
+						AID.ISLOCALNAME));
+			}else
 				System.out.println(msg.getContent());
 		}
 

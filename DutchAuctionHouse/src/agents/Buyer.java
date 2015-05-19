@@ -16,6 +16,7 @@ public class Buyer extends Agent {
 	private static final long serialVersionUID = 1L;
 	private AID seller;
 	private int money;
+	private AID client;
 	private String product;
 	private int quantity;
 
@@ -43,6 +44,14 @@ public class Buyer extends Agent {
 						send(reply);
 					}
 				}
+				else if (msgParts[1].equals("AcceptBid")) {
+					ACLMessage reply=new ACLMessage(ACLMessage.INFORM);
+					reply.addReceiver(client);
+					reply.setContent("Buyer-Bought-"+msgParts[2]+"-"+msgParts[3]);
+					send(reply);
+					System.out.println(client.toString());
+					this.myAgent.doDelete();
+				}
 			}
 		}
 
@@ -61,12 +70,13 @@ public class Buyer extends Agent {
 
 		Object[] args = getArguments();
 
-		if (args.length == 3) {
+		if (args.length == 4) {
 
 			seller = (AID) args[2];
 			money=199;
 			product=(String) args[0];
 			quantity=(int) args[1];
+			client=(AID)args[3];
 
 		} else {
 			System.err.println("Parametros inválidos no buyer" + args.length);

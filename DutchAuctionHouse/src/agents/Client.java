@@ -54,42 +54,59 @@ public class Client extends Agent {
 				}
 				// if client is registered
 				else {
-					if (msgParts[1].equals("Auctions")) {
-						clientAuctions.parseStringAuction(msgParts[2]);
-						
-						//System.err.println(msgParts[2]);
-						ArrayList<AID> sellers = clientAuctions
-								.getAuctionsWithoutBuyer();
+					if (msgParts[0].equals("CIC")) {
+						if (msgParts[1].equals("Auctions")) {
+							clientAuctions.parseStringAuction(msgParts[2]);
 
-						//System.err.println(sellers.toString());
-						
-						if (sellers.size() > 0) {
-							try {
-								for (int i = 0; i < sellers.size(); i++) {
-									Object[] arguments = new Object[3];
-									arguments[0] = product;
-									arguments[1] = quantity;
-									arguments[2] = sellers.get(i);
+							// System.err.println(msgParts[2]);
+							ArrayList<AID> sellers = clientAuctions
+									.getAuctionsWithoutBuyer();
 
-									// initializes agents for auction
-									AgentController buy1;
+							// System.err.println(sellers.toString());
 
-									buy1 = getContainerController()
-											.createNewAgent(
-													getLocalName() + "Buyer"
-															+ buyerNumber,
-													"agents.Buyer", arguments);
+							if (sellers.size() > 0) {
+								try {
+									for (int i = 0; i < sellers.size(); i++) {
+										Object[] arguments = new Object[4];
+										arguments[0] = product;
+										arguments[1] = quantity;
+										arguments[2] = sellers.get(i);
+										arguments[3] = this.getAgent().getAID();
 
-									buy1.start(); // acceptNewAgent("name1", new
-													// Agent());
-									buyerNumber++;
+										// initializes agents for auction
+										AgentController buy1;
+
+										buy1 = getContainerController()
+												.createNewAgent(
+														getLocalName()
+																+ "Buyer"
+																+ buyerNumber,
+														"agents.Buyer",
+														arguments);
+
+										buy1.start(); // acceptNewAgent("name1",
+														// new
+														// Agent());
+										buyerNumber++;
+									}
+								} catch (StaleProxyException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
 								}
-							} catch (StaleProxyException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
 							}
 						}
-					} else
+					}
+					else if (msgParts[0].equals("Buyer")) {
+						if(msgParts[1].equals("Bought"))
+						{
+							ACLMessage reply=new ACLMessage(ACLMessage.INFORM);
+							reply.addReceiver(CIC);
+							reply.setContent("Client-Exit");
+							send(reply);
+							this.myAgent.doDelete();
+						}
+					}
+					else
 						System.out.println(msg.getContent());
 				}
 			}
@@ -120,19 +137,18 @@ public class Client extends Agent {
 		sd.setName(getName());
 
 		// arguments
-		//Object[] args = getArguments();
+		// Object[] args = getArguments();
 		product = "pc";
 		quantity = 10;
 		clientAuctions = new ClientAuctions();
 		clock = new ClockTimer(3);// refresh rate
 		clock.runTime();
 
-		/*if (args.length == 0) {
-			System.out.println("teste");
-		} else {
-			System.err.println("Parametros inválidos no client");
-			System.exit(1);
-		}*/
+		/*
+		 * if (args.length == 0) { System.out.println("teste"); } else {
+		 * System.err.println("Parametros inválidos no client"); System.exit(1);
+		 * }
+		 */
 
 		// adds client to service
 		sd.setType("Client");

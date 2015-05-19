@@ -85,7 +85,14 @@ public class Seller extends Agent {
 					reply.setContent("Seller-Sold-" + msgParts[2] + "-"
 							+ msgParts[3]);
 					send(reply);
+					
 					// informs buyer that it accepted propose
+					reply =msg.createReply();
+					reply.setPerformative(ACLMessage.INFORM);
+					reply.setContent("Seller-AcceptBid-" + msgParts[2] + "-"
+							+ msgParts[3]);
+					send(reply);
+					
 					quantity -= Integer.parseInt(msgParts[3]);
 
 					if (quantity <= 0) {
