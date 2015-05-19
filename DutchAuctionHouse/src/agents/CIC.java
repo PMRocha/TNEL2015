@@ -83,6 +83,16 @@ public class CIC extends Agent {
 				register.removeShop(new AID(msg.getSender().getLocalName(),
 						AID.ISLOCALNAME));
 			}
+			else if(msgParts[1].equals("UpdateSeller"))
+			{
+				System.out.println("CIC:"+msg.getContent());
+				auctions.removeAuction(msgParts[3], new AID(msgParts[2],AID.ISLOCALNAME));
+				
+				if(Integer.parseInt(msgParts[4])>0)
+				{
+					auctions.addAuction(msgParts[3],Integer.parseInt(msgParts[4]),new AID(msgParts[2],AID.ISLOCALNAME));
+				}
+			}
 			else
 				System.out.println(msg.getContent());
 		}

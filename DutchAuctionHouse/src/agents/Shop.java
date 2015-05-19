@@ -48,12 +48,17 @@ public class Shop extends Agent {
 			{
 				if(msgParts[1].equals("Sold"))
 				{
-					
 					quantity-=Integer.parseInt(msgParts[3]);
+					
+					//informs CIC of alterations
+					ACLMessage reply=new ACLMessage(ACLMessage.INFORM);
+					reply.addReceiver(CIC);
+					reply.setContent("Shop-UpdateSeller-"+msg.getSender().getLocalName()+"-"+msgParts[2]+"-"+msgParts[3]);
+					send(reply);
 					
 					if(quantity<=0)
 					{
-					ACLMessage reply=new ACLMessage(ACLMessage.INFORM);
+					reply=new ACLMessage(ACLMessage.INFORM);
 					reply.setContent("Shop-Exit");
 					reply.addReceiver(CIC);
 					send(reply);
