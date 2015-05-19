@@ -24,6 +24,7 @@ public class Client extends Agent {
 	private boolean registered;
 	private String product;
 	private int quantity;
+	private int money;
 	private int buyerNumber;
 	private AID CIC;
 	private ClientAuctions clientAuctions;
@@ -56,6 +57,7 @@ public class Client extends Agent {
 				else {
 					if (msgParts[0].equals("CIC")) {
 						if (msgParts[1].equals("Auctions")) {
+							
 							clientAuctions.parseStringAuction(msgParts[2]);
 
 							// System.err.println(msgParts[2]);
@@ -67,11 +69,12 @@ public class Client extends Agent {
 							if (sellers.size() > 0) {
 								try {
 									for (int i = 0; i < sellers.size(); i++) {
-										Object[] arguments = new Object[4];
+										Object[] arguments = new Object[5];
 										arguments[0] = product;
 										arguments[1] = quantity;
-										arguments[2] = sellers.get(i);
-										arguments[3] = this.getAgent().getAID();
+										arguments[2] = money;
+										arguments[3] = sellers.get(i);
+										arguments[4] = this.getAgent().getAID();
 
 										// initializes agents for auction
 										AgentController buy1;
@@ -99,11 +102,19 @@ public class Client extends Agent {
 					else if (msgParts[0].equals("Buyer")) {
 						if(msgParts[1].equals("Bought"))
 						{
-							ACLMessage reply=new ACLMessage(ACLMessage.INFORM);
-							reply.addReceiver(CIC);
-							reply.setContent("Client-Exit");
-							send(reply);
-							this.myAgent.doDelete();
+							msgParts = msg.getContent().split("-");
+							quantity-=Integer.parseInt(msgParts[3]);
+							
+							
+							if(quantity<=0)
+							{
+								ACLMessage reply=new ACLMessage(ACLMessage.INFORM);
+								reply.addReceiver(CIC);
+								reply.setContent("Client-Exit");
+								send(reply);
+								this.myAgent.doDelete();
+							}
+								
 						}
 					}
 					else
@@ -138,17 +149,23 @@ public class Client extends Agent {
 
 		// arguments
 		// Object[] args = getArguments();
-		product = "pc";
-		quantity = 10;
+		
 		clientAuctions = new ClientAuctions();
 		clock = new ClockTimer(3);// refresh rate
 		clock.runTime();
-
-		/*
-		 * if (args.length == 0) { System.out.println("teste"); } else {
-		 * System.err.println("Parametros inválidos no client"); System.exit(1);
-		 * }
-		 */
+		Object[] args = getArguments();
+		
+		  if (args.length == 3)
+		  { 
+			  product = (String) args[0];
+			  quantity=(int) args[1];
+			  money=(int) args[2];
+			  
+		  }
+		  else {
+		  System.err.println("Parametros inválidos no client"); System.exit(1);
+		  }
+		 
 
 		// adds client to service
 		sd.setType("Client");

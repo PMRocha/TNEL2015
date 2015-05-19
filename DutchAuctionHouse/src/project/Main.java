@@ -34,17 +34,18 @@ public class Main {
 			
 			AgentController CIC = cc.acceptNewAgent("CIC", new CIC());
 			CIC.start();
-			
-			AgentController s1 = cc.createNewAgent("s1","agents.Shop", argument);
+			//product,quantity
+			AgentController s1 = cc.createNewAgent("s1","agents.Shop", new Object[]{"pc",15});
 			s1.start();
 			
 			/*AgentController s2 = cc.createNewAgent("s2","agents.Shop", argument);
 			s2.start();*/
 			
-			AgentController c1 = cc.createNewAgent("c1","agents.Client", argument);
+			//product,quantity,money
+			AgentController c1 = cc.createNewAgent("c1","agents.Client", new Object[]{"pc",5,1000});
 			c1.start();
 			
-			AgentController c2 = cc.createNewAgent("c2","agents.Client", argument);
+			AgentController c2 = cc.createNewAgent("c2","agents.Client", new Object[]{"pc",15,1000});
 			c2.start();
 
 		} catch (StaleProxyException e) {

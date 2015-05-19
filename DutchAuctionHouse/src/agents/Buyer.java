@@ -70,16 +70,17 @@ public class Buyer extends Agent {
 
 		Object[] args = getArguments();
 
-		if (args.length == 4) {
+		if (args.length == 5) {
 
-			seller = (AID) args[2];
-			money=199;
+			seller = (AID) args[3];
+			money=(int) args[2];
 			product=(String) args[0];
 			quantity=(int) args[1];
-			client=(AID)args[3];
+			client=(AID)args[4];
+			
 
 		} else {
-			System.err.println("Parametros inválidos no buyer" + args.length);
+			System.err.println("Parametros inválidos no buyer:" + args.length);
 			System.exit(1);
 		}
 

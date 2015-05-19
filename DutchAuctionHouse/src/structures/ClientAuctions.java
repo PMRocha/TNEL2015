@@ -30,13 +30,14 @@ public class ClientAuctions {
 
 		for (int i = 0; i < processing.length; i += 2) {
 
-			
+			System.out.println("help:"+processing[i + 1]);
 			help = processing[i + 1].substring(1).replaceAll("]", "").split(",");
 
 			
 			
 			for (int j = 0; j < help.length; j++) {
 				//extracts localname
+				
 				String localname=help[j].substring(help[j].indexOf(":name")+6,help[j].indexOf("@"));
 				sellers.add(new AID(localname, AID.ISLOCALNAME));
 			}
