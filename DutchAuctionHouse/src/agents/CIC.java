@@ -54,7 +54,6 @@ public class CIC extends Agent {
 			ACLMessage msg = blockingReceive();
 
 			String[] msgParts = msg.getContent().split("-");
-
 			if (msgParts[0].equals("Client")) {
 				ClientCommunication(msgParts, msg);
 			} else if (msgParts[0].equals("Shop")) {
@@ -78,7 +77,13 @@ public class CIC extends Agent {
 				auctions.addAuction(msgParts[2], Integer.parseInt(msgParts[3]),
 						new AID(msgParts[4], AID.ISLOCALNAME));
 				auctions.getAuctions().toString();
-			} else
+			} else if(msgParts[1].equals("Exit"))
+			{
+				System.out.println("CIC:"+msg.getContent());
+				register.removeShop(new AID(msg.getSender().getLocalName(),
+						AID.ISLOCALNAME));
+			}
+			else
 				System.out.println(msg.getContent());
 		}
 

@@ -39,7 +39,9 @@ public class RegisteredPeople {
 		
 	public void removeShop(AID name)
 	{
+		System.out.println("quantity:"+shops.size());
 		shops.remove(name);
+		System.out.println("quantity:"+shops.size());
 	}
 
 	public ArrayList<AID> getShops() {

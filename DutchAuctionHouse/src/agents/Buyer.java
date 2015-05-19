@@ -16,9 +16,9 @@ public class Buyer extends Agent {
 	private static final long serialVersionUID = 1L;
 	private AID seller;
 	private int money;
+	private String product;
+	private int quantity;
 
-	// random behaviour
-	private Random randomGenerator;
 
 	class BuyerBehaviour extends SimpleBehaviour {
 		private static final long serialVersionUID = 1L;
@@ -39,7 +39,7 @@ public class Buyer extends Agent {
 					if (Integer.parseInt(msgParts[4])< money) {
 						ACLMessage reply = msg.createReply();
 						reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-						reply.setContent("Buyer-Bid");
+						reply.setContent("Buyer-Bid-"+product+"-"+quantity);
 						send(reply);
 					}
 				}
@@ -65,6 +65,8 @@ public class Buyer extends Agent {
 
 			seller = (AID) args[2];
 			money=199;
+			product=(String) args[0];
+			quantity=(int) args[1];
 
 		} else {
 			System.err.println("Parametros inválidos no buyer" + args.length);

@@ -20,6 +20,7 @@ public class Shop extends Agent {
 	private String product;
 	private int quantity;
 	private int sellerNumber;
+	private boolean done;
 	
 	class ShopBehaviour extends SimpleBehaviour {
 
@@ -40,13 +41,29 @@ public class Shop extends Agent {
 				if(msgParts[1].equals("EnterSuccessful"))
 				{
 					registered=true;
+					createAuction();
 				}
 			}
-			
-			if(registered)
+			else if(msgParts[0].equals("Seller"))
 			{
-				createAuction();
+				if(msgParts[1].equals("Sold"))
+				{
+					
+					quantity-=Integer.parseInt(msgParts[3]);
+					
+					if(quantity<=0)
+					{
+					ACLMessage reply=new ACLMessage(ACLMessage.INFORM);
+					reply.setContent("Shop-Exit");
+					reply.addReceiver(CIC);
+					send(reply);
+			
+					this.myAgent.doDelete();
+					}
+				}
 			}
+			else
+				System.out.println(msg.getContent());
 			
 			
 		}
@@ -58,7 +75,7 @@ public class Shop extends Agent {
 				Object[] arguments = new Object[3];
 				arguments[0] = product;
 				arguments[1] = quantity;
-				arguments[2]= getName();
+				arguments[2]= getLocalName();
 				
 				AgentController sel1 =  getContainerController().createNewAgent(getLocalName()+"Seller"+sellerNumber,"agents.Seller",arguments);
 				sel1.start(); //acceptNewAgent("name1", new Agent());
@@ -78,7 +95,7 @@ public class Shop extends Agent {
 
 		// done method
 		public boolean done() {
-			return false;
+			return done;
 		}
 	}
 
@@ -92,6 +109,7 @@ public class Shop extends Agent {
 		quantity=10;
 		product="pc";
 		sellerNumber=0;
+		done=false;
 		
 		DFAgentDescription dfd = new DFAgentDescription();
 		dfd.setName(getAID());

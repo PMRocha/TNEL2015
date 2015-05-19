@@ -59,7 +59,7 @@ public class CICGUIController {
 	@FXML
 	private void initialize() {
 		
-		clientAgentListView.getSelectionModel().selectedItemProperty().removeListener(new ChangeListener<String>() {
+		/*clientAgentListView.getSelectionModel().selectedItemProperty().removeListener(new ChangeListener<String>() {
 
 			@Override
 			public void changed(ObservableValue<? extends String> observable,
@@ -95,7 +95,7 @@ public class CICGUIController {
 		if(agent!=null){
 			clientAgentListView.setItems(clientAgentListViewData);
 			shopAgentListView.setItems(shopAgentListViewData);
-			auctionListView.setItems(auctionListViewData);}
+			auctionListView.setItems(auctionListViewData);}*/
 	}
 	
 }
