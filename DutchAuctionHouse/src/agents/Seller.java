@@ -19,6 +19,7 @@ public class Seller extends Agent {
 	private String product;
 	private int quantity;
 	private int price;
+	private int money;
 	private boolean auctionStarted;
 	private String shop;
 
@@ -40,17 +41,23 @@ public class Seller extends Agent {
 		public void action() {
 			ACLMessage msg = receive();
 
-			ACLMessage reply;
-
 			if (msg != null) {
 				msgAction(msg);
 
 			} else {
-				if (clock.isTriggered()) {
-					if (!auctionStarted) {
-						auctionStarted = true;
-						clock.setTriggered(false);
-					} else {
+				noMsgAction();
+			}
+		}
+
+		private void noMsgAction() {
+			ACLMessage reply;
+			if (clock.isTriggered()) {
+				if (!auctionStarted) {
+					auctionStarted = true;
+					clock.setTriggered(false);
+				} else {
+					//this WILL be changed
+					if (price < money - 10) {
 						reply = new ACLMessage(ACLMessage.PROPOSE);
 						price--;
 
@@ -62,11 +69,16 @@ public class Seller extends Agent {
 								+ quantity + "-" + price);
 						send(reply);
 						clock.setTriggered(false);
-
 					}
-					// System.out.println("BUY NOW");
+					else 
+					{
+						endAuction();
+					}
+					
 
 				}
+				// System.out.println("BUY NOW");
+
 			}
 		}
 
@@ -85,28 +97,35 @@ public class Seller extends Agent {
 					reply.setContent("Seller-Sold-" + msgParts[2] + "-"
 							+ msgParts[3]);
 					send(reply);
-					
+
 					// informs buyer that it accepted propose
-					reply =msg.createReply();
+					reply = msg.createReply();
 					reply.setPerformative(ACLMessage.INFORM);
 					reply.setContent("Seller-AcceptBid-" + msgParts[2] + "-"
 							+ msgParts[3]);
 					send(reply);
-					
+					buyers.remove(msg.getSender());
+
 					quantity -= Integer.parseInt(msgParts[3]);
 
 					if (quantity <= 0) {
-						// end auction
-						reply = new ACLMessage(ACLMessage.CANCEL);
-						for (int i = 0; i < buyers.size(); i++) {
-							reply.addReceiver(buyers.get(i));
-						}
-						reply.setContent("Seller-AuctionEnded");
-						done = true;
-						this.myAgent.doDelete();
+						endAuction();
 					}
 				}
 			}
+		}
+
+		private void endAuction() {
+			ACLMessage reply;
+			// end auction
+			reply = new ACLMessage(ACLMessage.CANCEL);
+			for (int i = 0; i < buyers.size(); i++) {
+				reply.addReceiver(buyers.get(i));
+			}
+			reply.setContent("Seller-AuctionEnded");
+			send(reply);
+			done = true;
+			this.myAgent.doDelete();
 		}
 
 		// done method
@@ -124,7 +143,7 @@ public class Seller extends Agent {
 
 		Object[] args = getArguments();
 
-		if (args.length == 3) {
+		if (args.length == 4) {
 
 			done = false;
 			product = (String) args[0];
@@ -133,6 +152,7 @@ public class Seller extends Agent {
 			price = 200;
 			auctionStarted = false;
 			shop = (String) args[2];
+			money = (int) args[3] / quantity;
 			System.out.println("I'm seller and I sell " + product + " q: "
 					+ quantity);
 			clock = new ClockTimer(3);

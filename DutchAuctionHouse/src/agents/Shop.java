@@ -14,11 +14,11 @@ import jade.wrapper.StaleProxyException;
 public class Shop extends Agent {
 
 	private static final long serialVersionUID = 1L;
-	private boolean registered;
 	private AID CIC;
 	
 	private String product;
 	private int quantity;
+	private int money;
 	private int sellerNumber;
 	private boolean done;
 	
@@ -40,7 +40,7 @@ public class Shop extends Agent {
 			if (msgParts[0].equals("CIC")) {
 				if(msgParts[1].equals("EnterSuccessful"))
 				{
-					registered=true;
+				
 					createAuction();
 				}
 			}
@@ -77,10 +77,11 @@ public class Shop extends Agent {
 		private void createAuction() {
 			
 			try {
-				Object[] arguments = new Object[3];
+				Object[] arguments = new Object[4];
 				arguments[0] = product;
 				arguments[1] = quantity;
 				arguments[2]= getLocalName();
+				arguments[3]=money;
 				
 				AgentController sel1 =  getContainerController().createNewAgent(getLocalName()+"Seller"+sellerNumber,"agents.Seller",arguments);
 				sel1.start(); //acceptNewAgent("name1", new Agent());
@@ -107,9 +108,6 @@ public class Shop extends Agent {
 
 
 	protected void setup() {
-
-		registered=false;
-		
 		//may change
 		
 		sellerNumber=0;
@@ -122,11 +120,12 @@ public class Shop extends Agent {
 		
 		Object[] args = getArguments();
 
-		if (args.length == 2) {
+		if (args.length == 3) {
 			product=(String) args[0];
 			quantity=(int) args[1];
+			money=(int) args[2];
 		}  else {
-			System.err.println("Parametros inválidos no client");
+			System.err.println("Parametros inválidos no shop");
 			System.exit(1);
 		}
 

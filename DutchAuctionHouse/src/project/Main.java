@@ -35,7 +35,7 @@ public class Main {
 			AgentController CIC = cc.acceptNewAgent("CIC", new CIC());
 			CIC.start();
 			//product,quantity
-			AgentController s1 = cc.createNewAgent("s1","agents.Shop", new Object[]{"pc",15});
+			AgentController s1 = cc.createNewAgent("s1","agents.Shop", new Object[]{"pc",15,150});
 			s1.start();
 			
 			/*AgentController s2 = cc.createNewAgent("s2","agents.Shop", argument);

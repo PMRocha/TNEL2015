@@ -57,7 +57,7 @@ public class Client extends Agent {
 				else {
 					if (msgParts[0].equals("CIC")) {
 						if (msgParts[1].equals("Auctions")) {
-							
+
 							clientAuctions.parseStringAuction(msgParts[2]);
 
 							// System.err.println(msgParts[2]);
@@ -98,26 +98,22 @@ public class Client extends Agent {
 								}
 							}
 						}
-					}
-					else if (msgParts[0].equals("Buyer")) {
-						if(msgParts[1].equals("Bought"))
-						{
+					} else if (msgParts[0].equals("Buyer")) {
+						if (msgParts[1].equals("Bought")) {
 							msgParts = msg.getContent().split("-");
-							quantity-=Integer.parseInt(msgParts[3]);
-							
-							
-							if(quantity<=0)
-							{
-								ACLMessage reply=new ACLMessage(ACLMessage.INFORM);
+							quantity -= Integer.parseInt(msgParts[3]);
+
+							if (quantity <= 0) {
+								ACLMessage reply = new ACLMessage(
+										ACLMessage.INFORM);
 								reply.addReceiver(CIC);
 								reply.setContent("Client-Exit");
 								send(reply);
 								this.myAgent.doDelete();
 							}
-								
+
 						}
-					}
-					else
+					} else
 						System.out.println(msg.getContent());
 				}
 			}
@@ -149,23 +145,21 @@ public class Client extends Agent {
 
 		// arguments
 		// Object[] args = getArguments();
-		
+
 		clientAuctions = new ClientAuctions();
 		clock = new ClockTimer(3);// refresh rate
 		clock.runTime();
 		Object[] args = getArguments();
-		
-		  if (args.length == 3)
-		  { 
-			  product = (String) args[0];
-			  quantity=(int) args[1];
-			  money=(int) args[2];
-			  
-		  }
-		  else {
-		  System.err.println("Parametros inválidos no client"); System.exit(1);
-		  }
-		 
+
+		if (args.length == 3) {
+			product = (String) args[0];
+			quantity = (int) args[1];
+			money = (int) args[2];
+
+		} else {
+			System.err.println("Parametros inválidos no client"+ args.length);
+			System.exit(1);
+		}
 
 		// adds client to service
 		sd.setType("Client");

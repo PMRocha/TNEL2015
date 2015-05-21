@@ -9,7 +9,6 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 
-import java.util.Random;
 
 public class Buyer extends Agent {
 
@@ -37,7 +36,7 @@ public class Buyer extends Agent {
 			if (msgParts[0].equals("Seller")) {
 				if (msgParts[1].equals("Auction")) {
 					// random behaviour
-					if (Integer.parseInt(msgParts[4])< money) {
+					if (Integer.parseInt(msgParts[4])<=money) {
 						ACLMessage reply = msg.createReply();
 						reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
 						reply.setContent("Buyer-Bid-"+product+"-"+quantity);
@@ -49,7 +48,13 @@ public class Buyer extends Agent {
 					reply.addReceiver(client);
 					reply.setContent("Buyer-Bought-"+msgParts[2]+"-"+msgParts[3]);
 					send(reply);
-					System.out.println(client.toString());
+					this.myAgent.doDelete();
+				}
+				if (msgParts[1].equals("AuctionEnded")) {
+					ACLMessage reply=new ACLMessage(ACLMessage.INFORM);
+					reply.addReceiver(client);
+					reply.setContent("Buyer-Bought-"+product+"-"+0);
+					send(reply);
 					this.myAgent.doDelete();
 				}
 			}
@@ -73,9 +78,9 @@ public class Buyer extends Agent {
 		if (args.length == 5) {
 
 			seller = (AID) args[3];
-			money=(int) args[2];
 			product=(String) args[0];
 			quantity=(int) args[1];
+			money=(int) args[2]/quantity;
 			client=(AID)args[4];
 			
 
