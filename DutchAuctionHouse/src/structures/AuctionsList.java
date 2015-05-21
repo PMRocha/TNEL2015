@@ -48,13 +48,16 @@ public class AuctionsList {
 	public void removeAuction(String product, AID seller) {
 
 		HashMap<Integer, ArrayList<AID>> aux=auctions.get(product);
-		
+
 		for (int key : aux.keySet()) {
 		    if(aux.get(key).contains(seller))
 		    {
 		    	ArrayList<AID> help=aux.get(key);
 		    	help.remove(seller);
+		    	if(help.size()>0)
 		    	aux.put(key,help);
+		    	else
+		    	aux.remove(key);
 		    	break;
 		    }
 		}

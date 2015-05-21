@@ -19,7 +19,6 @@ public class Main {
 		// main container (i.e. on this host, port 1099)
 		ContainerController cc = rt.createMainContainer(p);
 		
-		Object[] argument =new Object[0];
 		
 		try {
 			AgentController rma = cc.createNewAgent("rma",
@@ -36,18 +35,17 @@ public class Main {
 			CIC.start();
 			//product,quantity
 			AgentController s1 = cc.createNewAgent("s1","agents.Shop", new Object[]{"pc",15,150});
-			s1.start();
-			
 			/*AgentController s2 = cc.createNewAgent("s2","agents.Shop", argument);
 			s2.start();*/
 			
 			//product,quantity,money
 			AgentController c1 = cc.createNewAgent("c1","agents.Client", new Object[]{"pc",5,1000});
-			c1.start();
-			
 			AgentController c2 = cc.createNewAgent("c2","agents.Client", new Object[]{"pc",15,1000});
+			
+			
 			c2.start();
-
+			c1.start();
+			s1.start();
 		} catch (StaleProxyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

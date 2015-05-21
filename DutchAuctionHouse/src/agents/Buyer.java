@@ -36,7 +36,7 @@ public class Buyer extends Agent {
 			if (msgParts[0].equals("Seller")) {
 				if (msgParts[1].equals("Auction")) {
 					// random behaviour
-					if (Integer.parseInt(msgParts[4])<=money) {
+					if (Integer.parseInt(msgParts[4])<=money/quantity) {
 						ACLMessage reply = msg.createReply();
 						reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
 						reply.setContent("Buyer-Bid-"+product+"-"+quantity);
@@ -48,6 +48,7 @@ public class Buyer extends Agent {
 					reply.addReceiver(client);
 					reply.setContent("Buyer-Bought-"+msgParts[2]+"-"+msgParts[3]);
 					send(reply);
+					System.out.println(this.getAgent().getLocalName()+" bidded for "+msgParts[3]);
 					this.myAgent.doDelete();
 				}
 				if (msgParts[1].equals("AuctionEnded")) {
@@ -80,7 +81,7 @@ public class Buyer extends Agent {
 			seller = (AID) args[3];
 			product=(String) args[0];
 			quantity=(int) args[1];
-			money=(int) args[2]/quantity;
+			money=(int) args[2];
 			client=(AID)args[4];
 			
 

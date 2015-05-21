@@ -29,8 +29,6 @@ public class ClientAuctions {
 		String[] processing = content.split("=");
 
 		for (int i = 0; i < processing.length; i += 2) {
-
-			System.out.println("help:"+processing[i + 1]);
 			help = processing[i + 1].substring(1).replaceAll("]", "").split(",");
 
 			

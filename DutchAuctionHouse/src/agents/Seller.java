@@ -55,11 +55,13 @@ public class Seller extends Agent {
 				if (!auctionStarted) {
 					auctionStarted = true;
 					clock.setTriggered(false);
+					System.out.println("auctionStarted");
 				} else {
 					//this WILL be changed
-					if (price < money - 10) {
+					System.out.println("price:"+price+",money:"+(money/quantity - 10));
+					if (price > money/quantity - 10) {
 						reply = new ACLMessage(ACLMessage.PROPOSE);
-						price--;
+						price=(int) (price*0.9);
 
 						for (int i = 0; i < buyers.size(); i++) {
 							reply.addReceiver(buyers.get(i));
@@ -67,7 +69,9 @@ public class Seller extends Agent {
 
 						reply.setContent("Seller-Auction-" + product + "-"
 								+ quantity + "-" + price);
+						
 						send(reply);
+						System.out.println(this.getAgent().getLocalName()+":"+reply.getContent());
 						clock.setTriggered(false);
 					}
 					else 
@@ -88,7 +92,6 @@ public class Seller extends Agent {
 			if (msgParts[0].equals("Buyer")) {
 				if (msgParts[1].equals("Enter")) {
 					buyers.add(msg.getSender());
-					System.out.println(buyers.size());
 				} else if (msgParts[1].equals("Bid")) {
 
 					// informs shop
@@ -152,7 +155,7 @@ public class Seller extends Agent {
 			price = 200;
 			auctionStarted = false;
 			shop = (String) args[2];
-			money = (int) args[3] / quantity;
+			money = (int) args[3];
 			System.out.println("I'm seller and I sell " + product + " q: "
 					+ quantity);
 			clock = new ClockTimer(3);

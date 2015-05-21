@@ -53,7 +53,7 @@ public class Shop extends Agent {
 					//informs CIC of alterations
 					ACLMessage reply=new ACLMessage(ACLMessage.INFORM);
 					reply.addReceiver(CIC);
-					reply.setContent("Shop-UpdateSeller-"+msg.getSender().getLocalName()+"-"+msgParts[2]+"-"+msgParts[3]);
+					reply.setContent("Shop-UpdateSeller-"+msg.getSender().getLocalName()+"-"+msgParts[2]+"-"+quantity);
 					send(reply);
 					
 					if(quantity<=0)
@@ -88,8 +88,7 @@ public class Shop extends Agent {
 				
 				ACLMessage msg=new ACLMessage(ACLMessage.REQUEST);
 				msg.addReceiver(CIC);
-				msg.setContent("Shop-CreateAuction-"+product+"-"+quantity+"-"+sel1.getName());
-				System.out.println("auction");
+				msg.setContent("Shop-CreateAuction-"+product+"-"+quantity+"-"+getLocalName()+"Seller"+sellerNumber);
 				send(msg);
 				sellerNumber++;
 				
