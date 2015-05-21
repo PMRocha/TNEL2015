@@ -58,8 +58,8 @@ public class Seller extends Agent {
 					System.out.println("auctionStarted");
 				} else {
 					//this WILL be changed
-					System.out.println("price:"+price+",money:"+(money/quantity - 10));
-					if (price > money/quantity - 10) {
+					System.out.println("price:"+price+",money:"+money);
+					if (price > money) {
 						reply = new ACLMessage(ACLMessage.PROPOSE);
 						price=(int) (price*0.9);
 

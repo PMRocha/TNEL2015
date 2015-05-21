@@ -26,17 +26,13 @@ public class Main {
 
 			rma.start();
 			
-			//AgentController CIC = cc.createNewAgent("CIC",
-					//"agents.CIC", Object[]);
-			
-			
 			
 			AgentController CIC = cc.acceptNewAgent("CIC", new CIC());
 			CIC.start();
 			//product,quantity
 			AgentController s1 = cc.createNewAgent("s1","agents.Shop", new Object[]{"pc",15,150});
-			/*AgentController s2 = cc.createNewAgent("s2","agents.Shop", argument);
-			s2.start();*/
+			AgentController s2 = cc.createNewAgent("s2","agents.Shop", new Object[]{"pc",15,100});
+			s2.start();
 			
 			//product,quantity,money
 			AgentController c1 = cc.createNewAgent("c1","agents.Client", new Object[]{"pc",5,1000});
