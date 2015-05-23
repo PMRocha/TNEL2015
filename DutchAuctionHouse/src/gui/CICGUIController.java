@@ -62,8 +62,7 @@ public class CICGUIController {
 		/*clientAgentListView.getSelectionModel().selectedItemProperty().removeListener(new ChangeListener<String>() {
 
 			@Override
-			public void changed(ObservableValue<? extends String> observable,
-					String oldValue, String newValue) {
+			public void changed(ObservableValue<? extends String> observable,String oldValue, String newValue) {
 					clientAgentListViewData.remove(oldValue);
 					clientAgentListViewData.add(newValue);
 					clientAgentListView.setItems(clientAgentListViewData);
@@ -73,8 +72,7 @@ public class CICGUIController {
 		shopAgentListView.getSelectionModel().selectedItemProperty().removeListener(new ChangeListener<String>() {
 
 			@Override
-			public void changed(ObservableValue<? extends String> observable,
-					String oldValue, String newValue) {
+			public void changed(ObservableValue<? extends String> observable,String oldValue, String newValue) {
 					shopAgentListViewData.remove(oldValue);
 					shopAgentListViewData.add(newValue);
 					shopAgentListView.setItems(shopAgentListViewData);
@@ -84,8 +82,7 @@ public class CICGUIController {
 		auctionListView.getSelectionModel().selectedItemProperty().removeListener(new ChangeListener<String>() {
 
 			@Override
-			public void changed(ObservableValue<? extends String> observable,
-					String oldValue, String newValue) {
+			public void changed(ObservableValue<? extends String> observable,String oldValue, String newValue) {
 					auctionListViewData.remove(oldValue);
 					auctionListViewData.add(newValue);
 					auctionListView.setItems(auctionListViewData);
