@@ -57,7 +57,6 @@ public class Client extends Agent {
 				else {
 					if (msgParts[0].equals("CIC")) {
 						if (msgParts[1].equals("Auctions")) {
-							System.out.println("test:"+msgParts[2]);
 							clientAuctions.parseStringAuction(msgParts[2]);
 
 							// System.err.println(msgParts[2]);
