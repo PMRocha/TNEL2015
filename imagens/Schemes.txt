@@ -1,0 +1,9 @@
+Client
+-enter
+-getAuctions
+-create buyers
+
+Shop
+-enter
+-create auction
+
