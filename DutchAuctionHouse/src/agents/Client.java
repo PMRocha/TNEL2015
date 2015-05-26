@@ -26,6 +26,8 @@ public class Client extends Agent {
 	private int quantity;
 	private int money;
 	private int buyerNumber;
+	private int algorithm;
+	private int valueGiven;
 	private AID CIC;
 	private ClientAuctions clientAuctions;
 	private ClockTimer clock;
@@ -68,12 +70,14 @@ public class Client extends Agent {
 							if (sellers.size() > 0) {
 								try {
 									for (int i = 0; i < sellers.size(); i++) {
-										Object[] arguments = new Object[5];
+										Object[] arguments = new Object[7];
 										arguments[0] = product;
 										arguments[1] = quantity;
 										arguments[2] = money;
 										arguments[3] = sellers.get(i);
 										arguments[4] = this.getAgent().getAID();
+										arguments[5] = valueGiven;
+										arguments[6] = algorithm;
 
 										// initializes agents for auction
 										AgentController buy1;
@@ -150,10 +154,13 @@ public class Client extends Agent {
 		clock.runTime();
 		Object[] args = getArguments();
 
-		if (args.length == 3) {
+		if (args.length == 5) {
 			product = (String) args[0];
 			quantity = (int) args[1];
 			money = (int) args[2];
+			valueGiven=(int) args[3];
+			algorithm=(int) args[4];
+			
 
 		} else {
 			System.err.println("Parametros inválidos no client"+ args.length);

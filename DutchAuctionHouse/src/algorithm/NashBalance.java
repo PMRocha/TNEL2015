@@ -11,6 +11,7 @@ public class NashBalance {
 	private double valueGiven;
 	private double realValue;
 	
+	//valueGiven,initial value, number of bidders
 	public NashBalance(double valueGiven, double initialValue, int numBider){
 		this.valueGiven=valueGiven;
 		this.realValue=initialValue/2;
@@ -45,7 +46,7 @@ public class NashBalance {
 		}
 	}
 	
-	private double solve(){
+	public double solve(){
 		int bestHedgeMine=0,bestHedgeOther=0;
 		int bestHedgeMineOld=0,bestHedgeOtherOld=0;
 		int bestHedgeMineFinal=Integer.MAX_VALUE;

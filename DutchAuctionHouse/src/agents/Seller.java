@@ -18,8 +18,9 @@ public class Seller extends Agent {
 	private static final long serialVersionUID = 1L;
 	private String product;
 	private int quantity;
-	private int price;
-	private int money;
+	private double price;
+	private double auctionStartMoney;
+	private double minimumBid;
 	private boolean auctionStarted;
 	private String shop;
 
@@ -58,8 +59,8 @@ public class Seller extends Agent {
 					System.out.println("auctionStarted");
 				} else {
 					//this WILL be changed
-					System.out.println("price:"+price+",money:"+money);
-					if (price > money) {
+					System.out.println("price:"+price+",minimum:"+minimumBid);
+					if (price > minimumBid) {
 						reply = new ACLMessage(ACLMessage.PROPOSE);
 						price=(int) (price*0.9);
 
@@ -92,6 +93,10 @@ public class Seller extends Agent {
 			if (msgParts[0].equals("Buyer")) {
 				if (msgParts[1].equals("Enter")) {
 					buyers.add(msg.getSender());
+					reply=msg.createReply();
+					reply.setPerformative(ACLMessage.CONFIRM);
+					reply.setContent("Seller-AcceptEntrance-"+auctionStartMoney);
+					send(reply);
 				} else if (msgParts[1].equals("Bid")) {
 
 					// informs shop
@@ -152,10 +157,12 @@ public class Seller extends Agent {
 			product = (String) args[0];
 			quantity = (int) args[1];
 			buyers = new ArrayList<AID>();
-			price = 200;
 			auctionStarted = false;
 			shop = (String) args[2];
-			money = (int) args[3];
+			auctionStartMoney = (int) args[3];
+			price=auctionStartMoney;
+			minimumBid=price/10;
+			
 			System.out.println("I'm seller and I sell " + product + " q: "
 					+ quantity);
 			clock = new ClockTimer(3);

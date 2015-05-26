@@ -1,5 +1,6 @@
 package agents;
 
+import algorithm.NashBalance;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
@@ -9,16 +10,19 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 
-
 public class Buyer extends Agent {
 
 	private static final long serialVersionUID = 1L;
 	private AID seller;
 	private int money;
+	private double priceOfBid;
 	private AID client;
 	private String product;
 	private int quantity;
+	private int algorithm;
+	private int valueGiven;
 
+	private NashBalance nash;
 
 	class BuyerBehaviour extends SimpleBehaviour {
 		private static final long serialVersionUID = 1L;
@@ -34,27 +38,41 @@ public class Buyer extends Agent {
 			String[] msgParts = msg.getContent().split("-");
 
 			if (msgParts[0].equals("Seller")) {
-				if (msgParts[1].equals("Auction")) {
+				if (msgParts[1].equals("AcceptEntrance")) {
+					if (algorithm == 1) {
+						nash = new NashBalance(valueGiven,
+								Double.parseDouble(msgParts[2]), 1);
+						priceOfBid = nash.solve();
+					} else
+						priceOfBid = money / (double) quantity;
+				}
+
+				else if (msgParts[1].equals("Auction")) {
 					// random behaviour
-					if (Integer.parseInt(msgParts[4])<=money/quantity) {
+					if (Double.parseDouble(msgParts[4]) <= priceOfBid) {
 						ACLMessage reply = msg.createReply();
 						reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-						reply.setContent("Buyer-Bid-"+product+"-"+quantity);
+						if (quantity > Integer.parseInt(msgParts[3]))
+							quantity = Integer.parseInt(msgParts[3]);
+
+						reply.setContent("Buyer-Bid-" + product + "-"
+								+ quantity);
 						send(reply);
 					}
-				}
-				else if (msgParts[1].equals("AcceptBid")) {
-					ACLMessage reply=new ACLMessage(ACLMessage.INFORM);
+				} else if (msgParts[1].equals("AcceptBid")) {
+					ACLMessage reply = new ACLMessage(ACLMessage.INFORM);
 					reply.addReceiver(client);
-					reply.setContent("Buyer-Bought-"+msgParts[2]+"-"+msgParts[3]);
+					reply.setContent("Buyer-Bought-" + msgParts[2] + "-"
+							+ msgParts[3]);
 					send(reply);
-					System.out.println(this.getAgent().getLocalName()+" bidded for "+msgParts[3]);
+					System.out.println(this.getAgent().getLocalName()
+							+ " bidded for " + msgParts[3]);
 					this.myAgent.doDelete();
 				}
 				if (msgParts[1].equals("AuctionEnded")) {
-					ACLMessage reply=new ACLMessage(ACLMessage.INFORM);
+					ACLMessage reply = new ACLMessage(ACLMessage.INFORM);
 					reply.addReceiver(client);
-					reply.setContent("Buyer-Bought-"+product+"-"+0);
+					reply.setContent("Buyer-Bought-" + product + "-" + 0);
 					send(reply);
 					this.myAgent.doDelete();
 				}
@@ -76,14 +94,15 @@ public class Buyer extends Agent {
 
 		Object[] args = getArguments();
 
-		if (args.length == 5) {
+		if (args.length == 7) {
 
+			product = (String) args[0];
+			quantity = (int) args[1];
+			money = (int) args[2];
 			seller = (AID) args[3];
-			product=(String) args[0];
-			quantity=(int) args[1];
-			money=(int) args[2];
-			client=(AID)args[4];
-			
+			client = (AID) args[4];
+			valueGiven = (int) args[5];
+			algorithm = (int) args[6];
 
 		} else {
 			System.err.println("Parametros inválidos no buyer:" + args.length);
