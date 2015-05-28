@@ -38,7 +38,7 @@ public class CIC extends Agent {
 
 	private RegisteredPeople register;
 	private AuctionsList auctions;
-	private CICGUI gui;
+	//private CICGUI gui;
 
 	class CICBehaviour extends SimpleBehaviour {
 
@@ -163,7 +163,7 @@ public class CIC extends Agent {
 		// cria behaviour
 		CICBehaviour c = new CICBehaviour(this);
 		addBehaviour(c);
-		Application.launch(CICGUI.class);
+		//Application.launch(CICGUI.class);
 	}
 
 }

@@ -1,5 +1,9 @@
 package agents;
 
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import structures.ClockTimer;
@@ -31,6 +35,7 @@ public class Client extends Agent {
 	private AID CIC;
 	private ClientAuctions clientAuctions;
 	private ClockTimer clock;
+	private PrintWriter writer;
 
 	class ClientBehaviour extends SimpleBehaviour {
 
@@ -155,11 +160,29 @@ public class Client extends Agent {
 		Object[] args = getArguments();
 
 		if (args.length == 5) {
+			try {
+				writer = new PrintWriter(getName()+".log", "UTF-8");
+			} catch (FileNotFoundException | UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 			product = (String) args[0];
 			quantity = (int) args[1];
 			money = (int) args[2];
 			valueGiven=(int) args[3];
 			algorithm=(int) args[4];
+			
+			//0 normal 1 hash 2nash all
+			switch(algorithm){
+			case 0:
+				writer.println("Client Agent created with normal algorithm.");
+				break;
+			case 1:
+				writer.println("Client Agent created with nash vs 1 algorithm.");
+				break;
+			case 2:
+				writer.println("Client Agent created with nash vs all algorithm.");
+				break;
+			}
 			
 
 		} else {

@@ -46,7 +46,7 @@ public class Buyer extends Agent {
 					} else
 						priceOfBid = money / (double) quantity;
 				}
-
+				
 				else if (msgParts[1].equals("Auction")) {
 					// random behaviour
 					if (Double.parseDouble(msgParts[4]) <= priceOfBid) {

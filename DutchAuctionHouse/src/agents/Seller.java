@@ -9,6 +9,9 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import structures.ClockTimer;
@@ -27,6 +30,7 @@ public class Seller extends Agent {
 	private ClockTimer clock;
 	private ArrayList<AID> buyers;
 	private boolean done;
+	PrintWriter writer;
 
 	// communication behaviour
 	class SellerBehaviour extends SimpleBehaviour {
@@ -97,6 +101,7 @@ public class Seller extends Agent {
 					reply.setPerformative(ACLMessage.CONFIRM);
 					reply.setContent("Seller-AcceptEntrance-"+auctionStartMoney);
 					send(reply);
+					System.out.println("enter");
 				} else if (msgParts[1].equals("Bid")) {
 
 					// informs shop
@@ -113,7 +118,9 @@ public class Seller extends Agent {
 							+ msgParts[3]);
 					send(reply);
 					buyers.remove(msg.getSender());
-
+					
+					writer.println("Agent "+msg.getSender()+" bought "+msgParts[2] +" of "+msgParts[3]+" for " + price);
+					
 					quantity -= Integer.parseInt(msgParts[3]);
 
 					if (quantity <= 0) {
@@ -153,6 +160,12 @@ public class Seller extends Agent {
 
 		if (args.length == 4) {
 
+			try {
+				writer = new PrintWriter(getName()+".log", "UTF-8");
+			} catch (FileNotFoundException | UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			
 			done = false;
 			product = (String) args[0];
 			quantity = (int) args[1];
