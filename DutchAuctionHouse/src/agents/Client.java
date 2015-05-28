@@ -60,13 +60,10 @@ public class Client extends Agent {
 					if (msgParts[0].equals("CIC")) {
 						if (msgParts[1].equals("Auctions")) {
 							clientAuctions.parseStringAuction(msgParts[2]);
-
 							// System.err.println(msgParts[2]);
 							ArrayList<AID> sellers = clientAuctions
 									.getAuctionsWithoutBuyer();
-
-							// System.err.println(sellers.toString());
-
+							
 							if (sellers.size() > 0) {
 								try {
 									for (int i = 0; i < sellers.size(); i++) {
@@ -150,7 +147,7 @@ public class Client extends Agent {
 		// Object[] args = getArguments();
 
 		clientAuctions = new ClientAuctions();
-		clock = new ClockTimer(3);// refresh rate
+		clock = new ClockTimer(6);// refresh rate
 		clock.runTime();
 		Object[] args = getArguments();
 

@@ -97,6 +97,7 @@ public class Seller extends Agent {
 					reply.setPerformative(ACLMessage.CONFIRM);
 					reply.setContent("Seller-AcceptEntrance-"+auctionStartMoney);
 					send(reply);
+				
 				} else if (msgParts[1].equals("Bid")) {
 
 					// informs shop
@@ -114,6 +115,8 @@ public class Seller extends Agent {
 					send(reply);
 					buyers.remove(msg.getSender());
 
+					System.out.println("teste:"+reply.getAllIntendedReceiver().toString());
+					
 					quantity -= Integer.parseInt(msgParts[3]);
 
 					if (quantity <= 0) {

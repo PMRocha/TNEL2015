@@ -21,13 +21,12 @@ public class ClientAuctions {
 	public void parseStringAuction(String content) {
 		existingAuctions = new HashMap<Integer, ArrayList<AID>>();
 		content = content.substring(1, content.length() - 1);
-
+		
 		String[] help;
 		ArrayList<AID> sellers = new ArrayList<AID>();
 
 		String[] processing = content.split("=");
-
-		if (processing.length < 2) {
+		if (processing.length >= 2) {
 			for (int i = 0; i < processing.length; i += 2) {
 				help = processing[i + 1].substring(1).replaceAll("]", "")
 						.split(",");
@@ -49,22 +48,22 @@ public class ClientAuctions {
 	public ArrayList<AID> getAuctionsWithoutBuyer() {
 		ArrayList<AID> existingSellers = new ArrayList<AID>();
 		ArrayList<AID> participatingSellers = new ArrayList<AID>();
-		;
 
-		for (Entry<Integer, ArrayList<AID>> auction : existingAuctions
-				.entrySet()) {
-			existingSellers.addAll(auction.getValue());
-		}
-
+		
 		for (Entry<Integer, ArrayList<AID>> auction : participatingAuctions
 				.entrySet()) {
 			participatingSellers.addAll(auction.getValue());
 		}
+		for (Entry<Integer, ArrayList<AID>> auction : existingAuctions
+				.entrySet()) {
+			existingSellers.addAll(auction.getValue());
+			participatingAuctions.put(auction.getKey(), auction.getValue());
+		}
 		existingSellers.removeAll(participatingSellers);
-
+		
 		// corrects number of auctions
 		participatingAuctions = existingAuctions;
-
+		
 		return existingSellers;
 
 	}
