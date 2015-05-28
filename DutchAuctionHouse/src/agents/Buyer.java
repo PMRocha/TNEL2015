@@ -69,7 +69,7 @@ public class Buyer extends Agent {
 							+ " bidded for " + msgParts[3]);
 					this.myAgent.doDelete();
 				}
-				if (msgParts[1].equals("AuctionEnded")) {
+				else if (msgParts[1].equals("AuctionEnded")) {
 					ACLMessage reply = new ACLMessage(ACLMessage.INFORM);
 					reply.addReceiver(client);
 					reply.setContent("Buyer-Bought-" + product + "-" + 0);
@@ -93,7 +93,7 @@ public class Buyer extends Agent {
 		sd.setName(getName());
 
 		Object[] args = getArguments();
-
+		System.out.println("create");
 		if (args.length == 7) {
 
 			product = (String) args[0];
@@ -103,6 +103,7 @@ public class Buyer extends Agent {
 			client = (AID) args[4];
 			valueGiven = (int) args[5];
 			algorithm = (int) args[6];
+			
 
 		} else {
 			System.err.println("Parametros inválidos no buyer:" + args.length);
