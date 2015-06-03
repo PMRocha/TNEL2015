@@ -29,14 +29,14 @@ public class Main {
 			
 			AgentController CIC = cc.acceptNewAgent("CIC", new CIC());
 			CIC.start();
-			//product,quantity
+			//product,quantity,price
 			//AgentController s1 = cc.createNewAgent("s1","agents.Shop", new Object[]{"pc",15,150});
 			AgentController s2 = cc.createNewAgent("s2","agents.Shop", new Object[]{"pc",15,300});
 			s2.start();
 			
 			//product,quantity,money,valuegiven,algorithm(0-normal e 1-nash)
 			AgentController c1 = cc.createNewAgent("c1","agents.Client", new Object[]{"pc",5,1000,150,1});
-			AgentController c2 = cc.createNewAgent("c2","agents.Client", new Object[]{"pc",15,1000,200,0});
+			AgentController c2 = cc.createNewAgent("c2","agents.Client", new Object[]{"pc",15,1000,150,0});
 			
 			
 			c2.start();

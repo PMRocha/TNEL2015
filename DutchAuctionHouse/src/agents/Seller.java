@@ -101,6 +101,16 @@ public class Seller extends Agent {
 					reply.setPerformative(ACLMessage.CONFIRM);
 					reply.setContent("Seller-AcceptEntrance-"+auctionStartMoney);
 					send(reply);
+					
+					//warns everybody
+					msg=new ACLMessage(ACLMessage.INFORM);
+					msg.setContent("Seller-BuyersInAuctions-"+buyers.size()+"-"+auctionStartMoney);
+					for (int i=0;i<buyers.size();i++)
+					{
+						msg.addReceiver(buyers.get(i));
+					}
+					send(msg);
+					
 				} else if (msgParts[1].equals("Bid")) {
 
 					// informs shop
@@ -164,7 +174,7 @@ public class Seller extends Agent {
 		if (args.length == 4) {
 
 			try {
-				writer = new PrintWriter(getName()+".log", "UTF-8");
+				writer = new PrintWriter(getLocalName()+".log", "UTF-8");
 			} catch (FileNotFoundException | UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}

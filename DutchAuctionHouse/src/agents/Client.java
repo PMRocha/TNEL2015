@@ -159,8 +159,7 @@ public class Client extends Agent {
 
 		if (args.length == 5) {
 			try {
-				File file = new File ("../"+getName()+".log");
-				writer = new PrintWriter(file, "UTF-8");
+				writer = new PrintWriter(getLocalName()+".log", "UTF-8");
 			} catch (FileNotFoundException | UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}

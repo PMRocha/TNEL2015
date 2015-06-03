@@ -43,8 +43,13 @@ public class Buyer extends Agent {
 						nash = new NashBalance(valueGiven,
 								Double.parseDouble(msgParts[2]), 1);
 						priceOfBid = nash.solve();
-					} else
-						priceOfBid = money / (double) quantity;
+					} else if (algorithm == 2) {
+						nash = new NashBalance(valueGiven,
+								Double.parseDouble(msgParts[2]), 30);
+						priceOfBid = nash.solve();
+					} 
+					else
+						priceOfBid =valueGiven;
 				}
 				
 				else if (msgParts[1].equals("Auction")) {
@@ -76,6 +81,14 @@ public class Buyer extends Agent {
 					send(reply);
 					this.myAgent.doDelete();
 				}
+				else if (msgParts[1].equals("BuyersInAuctions")) {
+					if(algorithm==2)
+					{
+						nash = new NashBalance(valueGiven,
+								Double.parseDouble(msgParts[3]),Integer.parseInt(msgParts[2] ));
+						priceOfBid = nash.solve();
+					}
+				}
 			}
 		}
 
@@ -104,7 +117,7 @@ public class Buyer extends Agent {
 			valueGiven = (int) args[5];
 			algorithm = (int) args[6];
 			
-
+			
 		} else {
 			System.err.println("Parametros inválidos no buyer:" + args.length);
 			System.exit(1);
