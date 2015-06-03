@@ -50,6 +50,8 @@ public class Buyer extends Agent {
 					} 
 					else
 						priceOfBid =valueGiven;
+					
+					System.err.println(priceOfBid);
 				}
 				
 				else if (msgParts[1].equals("Auction")) {
@@ -87,6 +89,7 @@ public class Buyer extends Agent {
 						nash = new NashBalance(valueGiven,
 								Double.parseDouble(msgParts[3]),Integer.parseInt(msgParts[2] ));
 						priceOfBid = nash.solve();
+						System.err.println(priceOfBid);
 					}
 				}
 			}

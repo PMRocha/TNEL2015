@@ -36,7 +36,7 @@ public class Main {
 			
 			//product,quantity,money,valuegiven,algorithm(0-normal e 1-nash)
 			AgentController c1 = cc.createNewAgent("c1","agents.Client", new Object[]{"pc",5,1000,150,1});
-			AgentController c2 = cc.createNewAgent("c2","agents.Client", new Object[]{"pc",15,1000,150,0});
+			AgentController c2 = cc.createNewAgent("c2","agents.Client", new Object[]{"pc",15,1000,150,2});
 			
 			
 			c2.start();
