@@ -1,5 +1,6 @@
 package agents;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -158,7 +159,8 @@ public class Client extends Agent {
 
 		if (args.length == 5) {
 			try {
-				writer = new PrintWriter(getName()+".log", "UTF-8");
+				File file = new File ("../"+getName()+".log");
+				writer = new PrintWriter(file, "UTF-8");
 			} catch (FileNotFoundException | UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
