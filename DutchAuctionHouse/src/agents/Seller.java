@@ -9,6 +9,7 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -101,11 +102,7 @@ public class Seller extends Agent {
 					reply.setPerformative(ACLMessage.CONFIRM);
 					reply.setContent("Seller-AcceptEntrance-"+auctionStartMoney);
 					send(reply);
-<<<<<<< HEAD
-					System.out.println("enter");
-=======
-				
->>>>>>> origin/master
+
 				} else if (msgParts[1].equals("Bid")) {
 
 					// informs shop
@@ -122,13 +119,8 @@ public class Seller extends Agent {
 							+ msgParts[3]);
 					send(reply);
 					buyers.remove(msg.getSender());
-<<<<<<< HEAD
 					
 					writer.println("Agent "+msg.getSender()+" bought "+msgParts[2] +" of "+msgParts[3]+" for " + price);
-=======
-
-					System.out.println("teste:"+reply.getAllIntendedReceiver().toString());
->>>>>>> origin/master
 					
 					quantity -= Integer.parseInt(msgParts[3]);
 
@@ -170,7 +162,8 @@ public class Seller extends Agent {
 		if (args.length == 4) {
 
 			try {
-				writer = new PrintWriter(getName()+".log", "UTF-8");
+				File file = new File ("../"+getName()+".log");
+				writer = new PrintWriter(file, "UTF-8");
 			} catch (FileNotFoundException | UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
