@@ -39,7 +39,12 @@ public class Buyer extends Agent {
 
 			if (msgParts[0].equals("Seller")) {
 				if (msgParts[1].equals("AcceptEntrance")) {
-					if (algorithm == 1) {
+					if (algorithm == 2) {
+						nash = new NashBalance(valueGiven,
+								Double.parseDouble(msgParts[2]), 30);
+						priceOfBid = nash.solve();
+					}
+					else if (algorithm == 1) {
 						nash = new NashBalance(valueGiven,
 								Double.parseDouble(msgParts[2]), 1);
 						priceOfBid = nash.solve();
