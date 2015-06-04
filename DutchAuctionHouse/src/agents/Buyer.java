@@ -42,11 +42,11 @@ public class Buyer extends Agent {
 					if (algorithm == 1) {
 						nash = new NashBalance(valueGiven,
 								Double.parseDouble(msgParts[2]), 1);
-						priceOfBid = nash.solve();
+						priceOfBid = valueGiven-nash.solve()*valueGiven;
 					} else if (algorithm == 2) {
 						nash = new NashBalance(valueGiven,
 								Double.parseDouble(msgParts[2]), 30);
-						priceOfBid = nash.solve();
+						priceOfBid = valueGiven-nash.solve()*valueGiven;
 					} 
 					else
 						priceOfBid =valueGiven;
@@ -88,7 +88,7 @@ public class Buyer extends Agent {
 					{
 						nash = new NashBalance(valueGiven,
 								Double.parseDouble(msgParts[3]),Integer.parseInt(msgParts[2] ));
-						priceOfBid = nash.solve();
+						priceOfBid = valueGiven-nash.solve()*valueGiven;
 						System.err.println(priceOfBid);
 					}
 				}

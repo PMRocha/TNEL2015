@@ -60,7 +60,7 @@ public class NashBalance {
 			if(bestHedgeMine<bestHedgeMineFinal)
 				bestHedgeMineFinal=bestHedgeMine;
 		}
-		return bestHedgeMine;
+		return bestHedgeMine*0.05;
 	}
 	
 	private int bestRow(double[] ds) {
