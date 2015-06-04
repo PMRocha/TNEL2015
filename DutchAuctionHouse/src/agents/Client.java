@@ -112,14 +112,14 @@ public class Client extends Agent {
 						if (msgParts[1].equals("Bought")) {
 							msgParts = msg.getContent().split("-");
 							quantity -= Integer.parseInt(msgParts[3]);
-
+							money-=Double.parseDouble(msgParts[4]);
 							if (quantity <= 0) {
 								ACLMessage reply = new ACLMessage(
 										ACLMessage.INFORM);
 								reply.addReceiver(CIC);
 								reply.setContent("Client-Exit");
 								try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(getLocalName()+".log", true)))) {
-								    out.write("Exited with "+money+"money");
+								    out.write("Exited with "+money+" money");
 								}catch (IOException e) {
 								    //exception handling left as an exercise for the reader
 								}
@@ -181,7 +181,7 @@ public class Client extends Agent {
 				try {
 					Writer writer = new BufferedWriter(new OutputStreamWriter(
 				              new FileOutputStream(file), "utf-8"));
-					writer.write("Client Agent created with normal algorithm.");
+					writer.write("Client Agent created with normal algorithm.\n");
 					writer.close();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -191,7 +191,7 @@ public class Client extends Agent {
 				try {
 					Writer writer = new BufferedWriter(new OutputStreamWriter(
 				              new FileOutputStream(file), "utf-8"));
-					writer.write("Client Agent created with nash vs 1 algorithm.");
+					writer.write("Client Agent created with nash vs 1 algorithm.\n");
 					writer.close();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -201,7 +201,7 @@ public class Client extends Agent {
 				try {
 					Writer writer = new BufferedWriter(new OutputStreamWriter(
 				              new FileOutputStream(file), "utf-8"));
-					writer.write("Client Agent created with nash vs all algorithm.");
+					writer.write("Client Agent created with nash vs all algorithm.\n");
 					writer.close();
 				} catch (IOException e) {
 					e.printStackTrace();

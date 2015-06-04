@@ -21,6 +21,7 @@ public class Buyer extends Agent {
 	private int quantity;
 	private int algorithm;
 	private int valueGiven;
+	private double biddedPrice;
 
 	private NashBalance nash;
 
@@ -57,6 +58,7 @@ public class Buyer extends Agent {
 				else if (msgParts[1].equals("Auction")) {
 					// random behaviour
 					if (Double.parseDouble(msgParts[4]) <= priceOfBid) {
+						biddedPrice=Double.parseDouble(msgParts[4]);
 						ACLMessage reply = msg.createReply();
 						reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
 						if (quantity > Integer.parseInt(msgParts[3]))
@@ -70,7 +72,7 @@ public class Buyer extends Agent {
 					ACLMessage reply = new ACLMessage(ACLMessage.INFORM);
 					reply.addReceiver(client);
 					reply.setContent("Buyer-Bought-" + msgParts[2] + "-"
-							+ msgParts[3]);
+							+ msgParts[3]+"-"+biddedPrice);
 					send(reply);
 					System.out.println(this.getAgent().getLocalName()
 							+ " bidded for " + msgParts[3]);
@@ -79,7 +81,7 @@ public class Buyer extends Agent {
 				else if (msgParts[1].equals("AuctionEnded")) {
 					ACLMessage reply = new ACLMessage(ACLMessage.INFORM);
 					reply.addReceiver(client);
-					reply.setContent("Buyer-Bought-" + product + "-" + 0);
+					reply.setContent("Buyer-Bought-" + product + "-0-0");
 					send(reply);
 					this.myAgent.doDelete();
 				}
@@ -89,7 +91,7 @@ public class Buyer extends Agent {
 						nash = new NashBalance(valueGiven,
 								Double.parseDouble(msgParts[3]),Integer.parseInt(msgParts[2] ));
 						priceOfBid = valueGiven-nash.solve()*valueGiven;
-						System.err.println(priceOfBid);
+						//System.err.println(priceOfBid);
 					}
 				}
 			}
@@ -109,7 +111,7 @@ public class Buyer extends Agent {
 		sd.setName(getName());
 
 		Object[] args = getArguments();
-		System.out.println("create");
+		//System.out.println("create");
 		if (args.length == 7) {
 
 			product = (String) args[0];

@@ -137,7 +137,7 @@ public class Seller extends Agent {
 						try {
 							Writer writer = new BufferedWriter(
 									new OutputStreamWriter(
-											new FileOutputStream(file), "utf-8"));
+											new FileOutputStream(file,true), "utf-8"));
 							writer.write("Agent " + msg.getSender()
 									+ " bought " + msgParts[2] + " of "
 									+ msgParts[3] + " for " + price);
