@@ -1,10 +1,15 @@
 package agents;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.util.ArrayList;
 
 import structures.ClockTimer;
@@ -36,7 +41,7 @@ public class Client extends Agent {
 	private AID CIC;
 	private ClientAuctions clientAuctions;
 	private ClockTimer clock;
-	private PrintWriter writer;
+	//Writer writer;
 
 	class ClientBehaviour extends SimpleBehaviour {
 
@@ -114,6 +119,11 @@ public class Client extends Agent {
 										ACLMessage.INFORM);
 								reply.addReceiver(CIC);
 								reply.setContent("Client-Exit");
+								try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(getLocalName()+".log", true)))) {
+								    out.write("Exited with "+money+"money");
+								}catch (IOException e) {
+								    //exception handling left as an exercise for the reader
+								}
 								send(reply);
 								this.myAgent.doDelete();
 							}
@@ -158,11 +168,8 @@ public class Client extends Agent {
 		Object[] args = getArguments();
 
 		if (args.length == 5) {
-			try {
-				writer = new PrintWriter(getLocalName()+".log", "UTF-8");
-			} catch (FileNotFoundException | UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
+			File file = new File(getLocalName()+".log");
+
 			product = (String) args[0];
 			quantity = (int) args[1];
 			money = (int) args[2];
@@ -172,13 +179,34 @@ public class Client extends Agent {
 			//0 normal 1 hash 2nash all
 			switch(algorithm){
 			case 0:
-				writer.println("Client Agent created with normal algorithm.");
+				try {
+					Writer writer = new BufferedWriter(new OutputStreamWriter(
+				              new FileOutputStream(file), "utf-8"));
+					writer.write("Client Agent created with normal algorithm.");
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				break;
 			case 1:
-				writer.println("Client Agent created with nash vs 1 algorithm.");
+				try {
+					Writer writer = new BufferedWriter(new OutputStreamWriter(
+				              new FileOutputStream(file), "utf-8"));
+					writer.write("Client Agent created with nash vs 1 algorithm.");
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				break;
 			case 2:
-				writer.println("Client Agent created with nash vs all algorithm.");
+				try {
+					Writer writer = new BufferedWriter(new OutputStreamWriter(
+				              new FileOutputStream(file), "utf-8"));
+					writer.write("Client Agent created with nash vs all algorithm.");
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				break;
 			}
 			

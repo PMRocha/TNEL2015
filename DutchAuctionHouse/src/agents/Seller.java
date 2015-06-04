@@ -9,9 +9,15 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.util.ArrayList;
 
 import structures.ClockTimer;
@@ -30,7 +36,6 @@ public class Seller extends Agent {
 	private ClockTimer clock;
 	private ArrayList<AID> buyers;
 	private boolean done;
-	PrintWriter writer;
 
 	// communication behaviour
 	class SellerBehaviour extends SimpleBehaviour {
@@ -128,7 +133,16 @@ public class Seller extends Agent {
 					send(reply);
 					buyers.remove(msg.getSender());
 					
-					writer.println("Agent "+msg.getSender()+" bought "+msgParts[2] +" of "+msgParts[3]+" for " + price);
+					File file = new File(getLocalName()+".log");
+					
+					try {
+						Writer writer = new BufferedWriter(new OutputStreamWriter(
+					              new FileOutputStream(file), "utf-8"));
+						writer.close();
+						writer.write("Agent "+msg.getSender()+" bought "+msgParts[2] +" of "+msgParts[3]+" for " + price);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 
 
 					System.out.println("teste:"+reply.getAllIntendedReceiver().toString());
@@ -172,12 +186,6 @@ public class Seller extends Agent {
 		Object[] args = getArguments();
 
 		if (args.length == 4) {
-
-			try {
-				writer = new PrintWriter(getLocalName()+".log", "UTF-8");
-			} catch (FileNotFoundException | UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
 			
 			done = false;
 			product = (String) args[0];
