@@ -53,6 +53,8 @@ public class Shop extends Agent {
 					//informs CIC of alterations
 					ACLMessage reply=new ACLMessage(ACLMessage.INFORM);
 					reply.addReceiver(CIC);
+					
+					
 					reply.setContent("Shop-UpdateSeller-"+msg.getSender().getLocalName()+"-"+msgParts[2]+"-"+quantity);
 					send(reply);
 					

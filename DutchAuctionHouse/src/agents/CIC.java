@@ -1,9 +1,5 @@
 package agents;
 
-import javafx.application.Application;
-import gui.CICGUI;
-import structures.AuctionsList;
-import structures.RegisteredPeople;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
@@ -12,6 +8,8 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
+import structures.AuctionsList;
+import structures.RegisteredPeople;
 
 public class CIC extends Agent {
 

@@ -1,0 +1,1 @@
+Agent ( agent-identifier :name c6Buyer4@192.168.56.1:1099/JADE  :addresses (sequence http://RCM-PC:7778/acc )) bought pc of 10 for 145.0

@@ -1,8 +1,6 @@
 package algorithm;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Random;
 
 public class NashBalance {
@@ -29,7 +27,7 @@ public class NashBalance {
 
 			for(int j=0;j<11;j++){
 				double hedgeMine=0,chanceToWinMine=0.8;
-				double[] line = new double[22];
+		
 				for(int k=0;k<22;k+=2){
 					
 					temp[j][k] = (realValue-(bidderNValue-(bidderNValue*hedgeOther)))*chanceToWinOther;
@@ -37,7 +35,7 @@ public class NashBalance {
 					hedgeMine+=0.05;
 					chanceToWinMine-=0.07;
 				}
-				System.out.println(Arrays.toString(temp[j]));
+				//System.out.println(Arrays.toString(temp[j]));
 				hedgeOther+=0.05;
 				chanceToWinOther-=0.07;
 			}

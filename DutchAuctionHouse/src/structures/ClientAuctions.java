@@ -21,35 +21,42 @@ public class ClientAuctions {
 	public void parseStringAuction(String content) {
 		existingAuctions = new HashMap<Integer, ArrayList<AID>>();
 		content = content.substring(1, content.length() - 1);
-		
+
 		String[] help;
 		ArrayList<AID> sellers = new ArrayList<AID>();
 
-		String[] processing = content.split("=");
-		if (processing.length >= 2) {
-			for (int i = 0; i < processing.length; i += 2) {
-				help = processing[i + 1].substring(1).replaceAll("]", "")
-						.split(",");
+		String[] processing = content.split("],");
+		String[] separation;
 
-				for (int j = 0; j < help.length; j++) {
-					// extracts localname
+		if (processing.length > 0) {
+			if (!processing[0].equals("")) {
 
-					String localname = help[j].substring(
-							help[j].indexOf(":name") + 6, help[j].indexOf("@"));
-					sellers.add(new AID(localname, AID.ISLOCALNAME));
+				for (int i = 0; i < processing.length; i++) {
+					separation = processing[i].split("=");
+					help = separation[1].substring(1).replaceAll("]", "")
+							.split(",");
+
+					for (int j = 0; j < help.length; j += 2) {
+						// extracts localname
+						String localname = help[j].substring(
+								help[j].indexOf(":name") + 6,
+								help[j].indexOf("@"));
+						sellers.add(new AID(localname, AID.ISLOCALNAME));
+					}
+
+					existingAuctions.put(
+							Integer.parseInt(separation[0].trim()), sellers);
+					sellers = new ArrayList<AID>();
 				}
-
-				existingAuctions.put(Integer.parseInt(processing[i]), sellers);
-				sellers = new ArrayList<AID>();
 			}
 		}
+
 	}
 
 	public ArrayList<AID> getAuctionsWithoutBuyer() {
 		ArrayList<AID> existingSellers = new ArrayList<AID>();
 		ArrayList<AID> participatingSellers = new ArrayList<AID>();
 
-		
 		for (Entry<Integer, ArrayList<AID>> auction : participatingAuctions
 				.entrySet()) {
 			participatingSellers.addAll(auction.getValue());
@@ -60,10 +67,10 @@ public class ClientAuctions {
 			participatingAuctions.put(auction.getKey(), auction.getValue());
 		}
 		existingSellers.removeAll(participatingSellers);
-		
+
 		// corrects number of auctions
 		participatingAuctions = existingAuctions;
-		
+
 		return existingSellers;
 
 	}

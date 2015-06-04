@@ -11,12 +11,9 @@ import jade.lang.acl.ACLMessage;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
 
@@ -67,11 +64,12 @@ public class Seller extends Agent {
 					clock.setTriggered(false);
 					System.out.println("auctionStarted");
 				} else {
-					//this WILL be changed
-					System.out.println("price:"+price+",minimum:"+minimumBid);
+					// this WILL be changed
+					System.out.println("price:" + price + ",minimum:"
+							+ minimumBid);
 					if (price > minimumBid) {
 						reply = new ACLMessage(ACLMessage.PROPOSE);
-						price=(int) (price*0.9);
+						price = (int) (price * 0.9);
 
 						for (int i = 0; i < buyers.size(); i++) {
 							reply.addReceiver(buyers.get(i));
@@ -79,16 +77,14 @@ public class Seller extends Agent {
 
 						reply.setContent("Seller-Auction-" + product + "-"
 								+ quantity + "-" + price);
-						
+
 						send(reply);
-						System.out.println(this.getAgent().getLocalName()+":"+reply.getContent());
+						System.out.println(this.getAgent().getLocalName() + ":"
+								+ reply.getContent());
 						clock.setTriggered(false);
-					}
-					else 
-					{
+					} else {
 						endAuction();
 					}
-					
 
 				}
 				// System.out.println("BUY NOW");
@@ -102,54 +98,94 @@ public class Seller extends Agent {
 			if (msgParts[0].equals("Buyer")) {
 				if (msgParts[1].equals("Enter")) {
 					buyers.add(msg.getSender());
-					reply=msg.createReply();
+					reply = msg.createReply();
 					reply.setPerformative(ACLMessage.CONFIRM);
-					reply.setContent("Seller-AcceptEntrance-"+auctionStartMoney);
+					reply.setContent("Seller-AcceptEntrance-"
+							+ auctionStartMoney);
 					send(reply);
-					
-					//warns everybody
-					msg=new ACLMessage(ACLMessage.INFORM);
-					msg.setContent("Seller-BuyersInAuctions-"+buyers.size()+"-"+auctionStartMoney);
-					for (int i=0;i<buyers.size();i++)
-					{
+
+					// warns everybody
+					msg = new ACLMessage(ACLMessage.INFORM);
+					msg.setContent("Seller-BuyersInAuctions-" + buyers.size()
+							+ "-" + auctionStartMoney);
+					for (int i = 0; i < buyers.size(); i++) {
 						msg.addReceiver(buyers.get(i));
 					}
 					send(msg);
-					
+
 				} else if (msgParts[1].equals("Bid")) {
 
-					// informs shop
-					reply = new ACLMessage(ACLMessage.INFORM);
-					reply.addReceiver(new AID(shop, AID.ISLOCALNAME));
-					reply.setContent("Seller-Sold-" + msgParts[2] + "-"
-							+ msgParts[3]);
-					send(reply);
+					
+					if (quantity >= Integer.parseInt(msgParts[3])) {
+						// informs shop
+						reply = new ACLMessage(ACLMessage.INFORM);
+						reply.addReceiver(new AID(shop, AID.ISLOCALNAME));
+						reply.setContent("Seller-Sold-" + msgParts[2] + "-"
+								+ msgParts[3]);
+						send(reply);
 
-					// informs buyer that it accepted propose
-					reply = msg.createReply();
-					reply.setPerformative(ACLMessage.INFORM);
-					reply.setContent("Seller-AcceptBid-" + msgParts[2] + "-"
-							+ msgParts[3]);
-					send(reply);
-					buyers.remove(msg.getSender());
-					
-					File file = new File(getLocalName()+".log");
-					
-					try {
-						Writer writer = new BufferedWriter(new OutputStreamWriter(
-					              new FileOutputStream(file), "utf-8"));
-						writer.close();
-						writer.write("Agent "+msg.getSender()+" bought "+msgParts[2] +" of "+msgParts[3]+" for " + price);
-					} catch (IOException e) {
-						e.printStackTrace();
+						// informs buyer that it accepted propose
+						reply = msg.createReply();
+						reply.setPerformative(ACLMessage.INFORM);
+						reply.setContent("Seller-AcceptBid-" + msgParts[2]
+								+ "-" + msgParts[3]);
+						send(reply);
+						buyers.remove(msg.getSender());
+
+						File file = new File(getLocalName() + ".log");
+
+						try {
+							Writer writer = new BufferedWriter(
+									new OutputStreamWriter(
+											new FileOutputStream(file), "utf-8"));
+							writer.write("Agent " + msg.getSender()
+									+ " bought " + msgParts[2] + " of "
+									+ msgParts[3] + " for " + price);
+							writer.close();
+
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+
+						/*System.out.println("teste:"
+								+ reply.getAllIntendedReceiver().toString());*/
+
+						quantity -= Integer.parseInt(msgParts[3]);
 					}
-
-
-					System.out.println("teste:"+reply.getAllIntendedReceiver().toString());
-
 					
-					quantity -= Integer.parseInt(msgParts[3]);
+					else if(quantity <= Integer.parseInt(msgParts[3])&&quantity!=0)
+					{
+						// informs shop
+						reply = new ACLMessage(ACLMessage.INFORM);
+						reply.addReceiver(new AID(shop, AID.ISLOCALNAME));
+						reply.setContent("Seller-Sold-" + msgParts[2] + "-"
+								+ quantity);
+						send(reply);
 
+						// informs buyer that it accepted propose
+						reply = msg.createReply();
+						reply.setPerformative(ACLMessage.INFORM);
+						reply.setContent("Seller-AcceptBid-" + msgParts[2]
+								+ "-" + quantity);
+						send(reply);
+						buyers.remove(msg.getSender());
+
+						File file = new File(getLocalName() + ".log");
+
+						try {
+							Writer writer = new BufferedWriter(
+									new OutputStreamWriter(
+											new FileOutputStream(file), "utf-8"));
+							writer.write("Agent " + msg.getSender()
+									+ " bought " + msgParts[2] + " of "
+									+ quantity + " for " + price);
+							writer.close();
+
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						quantity=0;
+					}
 					if (quantity <= 0) {
 						endAuction();
 					}
@@ -166,6 +202,7 @@ public class Seller extends Agent {
 			}
 			reply.setContent("Seller-AuctionEnded");
 			send(reply);
+			
 			done = true;
 			this.myAgent.doDelete();
 		}
@@ -186,7 +223,7 @@ public class Seller extends Agent {
 		Object[] args = getArguments();
 
 		if (args.length == 4) {
-			
+
 			done = false;
 			product = (String) args[0];
 			quantity = (int) args[1];
@@ -194,9 +231,9 @@ public class Seller extends Agent {
 			auctionStarted = false;
 			shop = (String) args[2];
 			auctionStartMoney = (int) args[3];
-			price=auctionStartMoney;
-			minimumBid=price/10;
-			
+			price = auctionStartMoney;
+			minimumBid = price / 10;
+
 			System.out.println("I'm seller and I sell " + product + " q: "
 					+ quantity);
 			clock = new ClockTimer(3);

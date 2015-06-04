@@ -1,6 +1,5 @@
 package agents;
 
-import algorithm.NashBalance;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
@@ -9,6 +8,7 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
+import algorithm.NashBalance;
 
 public class Buyer extends Agent {
 
