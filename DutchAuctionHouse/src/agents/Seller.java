@@ -171,6 +171,18 @@ public class Seller extends Agent {
 						buyers.remove(msg.getSender());
 
 						File file = new File(getLocalName() + ".log");
+						if(file.length()!=0){
+							Writer writer;
+							try {
+								writer = new BufferedWriter(new OutputStreamWriter(
+								          new FileOutputStream(file), "utf-8"));
+								writer.write("");
+								writer.close();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+							
+						}
 
 						try {
 							Writer writer = new BufferedWriter(

@@ -168,6 +168,18 @@ public class Client extends Agent {
 
 		if (args.length == 5) {
 			File file = new File(getLocalName()+".log");
+			if(file.length()!=0){
+				Writer writer;
+				try {
+					writer = new BufferedWriter(new OutputStreamWriter(
+					          new FileOutputStream(file), "utf-8"));
+					writer.write("");
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+			}
 
 			product = (String) args[0];
 			quantity = (int) args[1];
